@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PrestaLink Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="prestalink-dashboard.css">
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQkMDRjv5XAr3JQJdmftS3pt5TRpRkM="
+      crossorigin="">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <aside class="col-md-2 sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <h3 id="prestalinkSidebarLogo" class="prestalink-sidebar-logo">PrestaLink</h3>
+                <button type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        title="Fermer le menu"
+                        aria-label="Fermer le menu"
+                        aria-expanded="true"
+                        onclick="toggleSidebar()">
+                    ☰
+                </button>
+            </div>
+
+            <div class="sidebar-search">
+                <label for="globalSearchInput">Rechercher</label>
+                <input id="globalSearchInput"
+                       type="search"
+                       placeholder="Rechercher une offre, une demande, un utilisateur..."
+                       autocomplete="off"
+                       oninput="handleGlobalSearchInput(this.value)"
+                       onfocus="expandSidebarForSearch()">
+                <button type="button"
+                        class="sidebar-search-icon"
+                        title="Rechercher"
+                        aria-label="Rechercher"
+                        onclick="expandSidebarForSearch()">
+                    🔎
+                </button>
+            </div>
+
+            <nav class="sidebar-menu" aria-label="Navigation principale">
+            <a href="#" onclick="loadHomeFeed({ resetFilters: true })">🏠 Accueil</a>
+
+            <a href="#" onclick="loadAvailableOffers()">🛠️ Offres</a>
+
+            <a href="#" onclick="loadAvailableRequests()">📨 Demandes</a>
+
+            <a href="#" onclick="loadContactPage()">📞 Contactez-nous</a>
+
+            <a href="#" onclick="loadAboutPage()">ℹ️ À propos</a>
+
+            <a href="#" class="auth-only sidebar-link-with-badge" onclick="loadMyOffers()">
+                <span>🧰 Mes offres</span>
+                <span class="sidebar-count-badge sidebar-count-offers" id="myOffersBadge">0</span>
+            </a>
+
+            <a href="#" class="auth-only sidebar-link-with-badge" onclick="loadMyRequests()">
+                <span>📬 Mes demandes</span>
+                <span class="sidebar-count-badge sidebar-count-requests" id="myRequestsBadge">0</span>
+            </a>
+
+            <a href="#" class="auth-only sidebar-link-with-badge" onclick="loadMyFavorites()">
+                <span>❤️ Favoris</span>
+                <span class="sidebar-count-badge sidebar-count-favorites" id="myFavoritesBadge">0</span>
+            </a>
+
+            <a href="#" class="auth-only sidebar-link-with-badge" onclick="loadServiceHistory()">
+                <span>📜 Historique</span>
+                <span class="sidebar-count-badge sidebar-count-history" id="historyBadge">0</span>
+            </a>
+            <a href="#" class="auth-only admin-only" onclick="loadAdminBanners()">Bannière d’accueil</a>
+            <a href="#" class="auth-only admin-only" onclick="loadAdminBranding()">Branding</a>
+            </nav>
+        </aside>
+
+        <main class="col-md-10 p-4 dashboard-main" id="dashboardMain">
+
+            <div class="dashboard-fixed-area">
+
+            <header class="app-header">
+
+                <div class="dashboard-header-brand">
+                    <div id="prestalinkDashboardLogo" class="dashboard-header-logo">PrestaLink</div>
+                    <div class="dashboard-header-copy">
+                        <h2>PrestaLink Dashboard</h2>
+                        <p id="prestalinkDashboardSlogan">Plateforme temps réel de mise en relation clients et prestataires</p>
+                    </div>
+                </div>
+
+
+                <div class="header-actions">
+                    <div class="notification-center auth-only">
+                        <button class="notification-bell"
+                                type="button"
+                                aria-label="Notifications"
+                                onclick="toggleNotificationPanel()">
+                            <span aria-hidden="true">🔔</span>
+                            <span class="notification-count" id="notificationBadge">0</span>
+                        </button>
+
+                        <div class="notification-panel" id="notificationPanel">
+                            <div class="notification-panel-header">
+                                <strong>Notifications</strong>
+                                <button type="button" onclick="markAllNotificationsRead()">Tout marquer comme lu</button>
+                            </div>
+                            <div id="notificationsList" class="notification-list"></div>
+                        </div>
+                    </div>
+
+                <div class="user-menu">
+                    <button class="user-pill" onclick="toggleUserDropdown()">
+                        <span class="user-avatar" id="userAvatar">U</span>
+
+                        <span>
+                            <strong id="currentUserName">Utilisateur</strong>
+                            <span id="currentUserVerification"></span>
+                        </span>
+
+                        <span>▾</span>
+                    </button>
+
+                    <div class="user-dropdown" id="userDropdown">
+                        <button onclick="openProfileModal()">
+                            👤 Modifier le profil
+                        </button>
+                        <button onclick="logout()">
+                            🚪 Déconnexion
+                        </button>
+                    </div>
+                </div>
+                </div>
+
+            </header>
+            <section class="persistent-dashboard-banner" id="persistentDashboardBanner" aria-label="Présentation PrestaLink">
+                <div class="persistent-media-grid" id="persistentMediaGrid"></div>
+                <div class="persistent-active-banner" id="persistentActiveBanner"></div>
+            </section>
+
+            </div>
+
+            <div class="card-custom mb-4 dynamic-dashboard" id="dynamicView" style="display: none;">
+
+                <div class="dynamic-header">
+                    <div>
+                        <h4 id="dynamicTitle">Centre de supervision</h4>
+                        <p id="dynamicSubtitle">Surveillance temps réel de la plateforme</p>
+                    </div>
+
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        LIVE
+                    </div>
+                </div>
+
+                <div id="dynamicContent" class="dynamic-content"></div>
+
+            </div>
+
+        </main>
+
+    </div>
+</div>
+
+<div class="modal-overlay" id="profileModal">
+
+    <div class="profile-modal">
+
+        <h4>Modifier le profil</h4>
+
+        <div class="profile-photo-upload">
+            <div class="profile-photo-preview" id="profilePhotoPreview"></div>
+            <label for="profilePhoto">Photo de profil</label>
+            <input id="profilePhoto"
+                   type="file"
+                   accept="image/jpeg,image/png,image/webp"
+                   onchange="handleProfilePhotoInput(this)">
+        </div>
+
+        <input id="profileFullName" placeholder="Nom complet">
+        <input id="profileEmail" placeholder="Email">
+        <input id="profilePhone" placeholder="Téléphone">
+
+        <div class="profile-verification-panel" id="profileVerificationPanel"></div>
+        <div class="profile-verification-message" id="profileVerificationMessage"></div>
+
+        <input id="profileStreetAddress"
+               placeholder="Rue : No et nom de la rue">
+
+        <input id="profileCity"
+               placeholder="Ville ou zone approximative">
+
+        <input id="profilePostalCode"
+               placeholder="Code postal">
+
+        <select id="profileCountry" onchange="handleProfileCountryChange()">
+            <option value="">Pays de résidence</option>
+            <option value="Canada">Canada</option>
+            <option value="United States">États-Unis</option>
+            <option value="Mauritanie">Mauritanie</option>
+            <option value="Senegal">Sénégal</option>
+            <option value="Mali">Mali</option>
+            <option value="France">France</option>
+            <option value="Maroc">Maroc</option>
+            <option value="Algerie">Algérie</option>
+            <option value="Tunisie">Tunisie</option>
+            <option value="Cote d'Ivoire">Côte d'Ivoire</option>
+            <option value="Autre">Autre</option>
+        </select>
+
+        <input id="profileCustomCountry"
+               style="display:none"
+               placeholder="Nom du pays">
+
+        <input id="profileCustomCurrency"
+               style="display:none"
+               placeholder="Symbole ou code devise">
+
+        <div class="profile-location-tools">
+            <button type="button"
+                    class="service-btn service-btn-outline"
+                    onclick="requestBrowserLocation()">
+                Autoriser la localisation
+            </button>
+            <span>Saisir ma position manuellement</span>
+        </div>
+
+        <input id="profileLatitude"
+               type="number"
+               step="any"
+               placeholder="Latitude">
+
+        <input id="profileLongitude"
+               type="number"
+               step="any"
+               placeholder="Longitude">
+
+
+
+        <div class="modal-actions">
+            <button onclick="closeProfileModal()" class="btn-cancel">
+                Annuler
+            </button>
+
+            <button onclick="saveProfile()" class="btn-save">
+                Enregistrer
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="createRequestModal">
+
+    <div class="profile-modal">
+
+        <div class="edit-publication-type request-type"
+             id="requestPublicationBadge">
+            <span>📨</span>
+        </div>
+
+        <h4 id="requestModalTitle">Créer une demande</h4>
+
+        <p class="required-info">
+            Les champs marqués par <span>*</span> sont obligatoires.
+        </p>
+
+        <select id="requestPublicationType"
+                class="publication-type-select">
+            <option value="REQUEST">
+                📨 Demande de service
+            </option>
+
+            <option value="OFFER">
+                🛠️ Offre de service
+            </option>
+        </select>
+
+        <input id="requestTitle"
+               placeholder="Titre de la demande *">
+
+        <textarea id="requestDescription"
+                  placeholder="Description de la demande *"></textarea>
+
+        <input id="requestBudget"
+               type="number"
+               placeholder="Budget estimé">
+
+        <input id="requestLocation"
+               placeholder="Localisation *">
+
+        <select id="requestCategoryId" required>
+            <option value="">
+                Catégorie *
+            </option>
+        </select>
+
+        <div class="publication-photo-upload">
+            <label for="requestPhotos">Photos</label>
+            <input id="requestPhotos"
+                   type="file"
+                   accept="image/jpeg,image/png,image/webp"
+                   multiple
+                   onchange="handlePublicationPhotoInput('request', this)">
+            <div class="publication-photo-count" id="requestPhotoCount">0/3 photos</div>
+            <div class="publication-photo-preview" id="requestPhotoPreview"></div>
+        </div>
+
+        <div class="modal-actions">
+
+            <button class="btn-cancel"
+                    onclick="closeCreateRequestModal()">
+                Annuler
+            </button>
+
+            <button class="btn-save"
+                    id="requestSubmitButton"
+                    onclick="handleRequestSubmit()">
+                Publier
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="createOfferModal">
+
+    <div class="profile-modal">
+
+        <div class="edit-publication-type offer-type"
+             id="offerPublicationBadge">
+            <span>🛠️</span>
+        </div>
+
+        <h4 id="offerModalTitle">Créer une offre</h4>
+
+        <p class="required-info">
+            Les champs marqués par <span>*</span> sont obligatoires.
+        </p>
+
+        <select id="offerPublicationType"
+                class="publication-type-select">
+            <option value="OFFER">
+                🛠️ Offre de service
+            </option>
+
+            <option value="REQUEST">
+                📨 Demande de service
+            </option>
+        </select>
+
+        <input id="offerTitle"
+               placeholder="Titre de l’offre *">
+
+        <textarea id="offerDescription"
+                  placeholder="Description de l’offre *"></textarea>
+
+        <input id="offerPrice"
+               type="number"
+               placeholder="Prix de départ">
+
+        <input id="offerLocation"
+               placeholder="Zone d’intervention *">
+
+        <select id="offerCategoryId" required>
+            <option value="">
+                Catégorie *
+            </option>
+        </select>
+
+        <div class="publication-photo-upload">
+            <label for="offerPhotos">Photos</label>
+            <input id="offerPhotos"
+                   type="file"
+                   accept="image/jpeg,image/png,image/webp"
+                   multiple
+                   onchange="handlePublicationPhotoInput('offer', this)">
+            <div class="publication-photo-count" id="offerPhotoCount">0/3 photos</div>
+            <div class="publication-photo-preview" id="offerPhotoPreview"></div>
+        </div>
+
+        <div class="modal-actions">
+
+            <button class="btn-cancel"
+                    onclick="closeCreateOfferModal()">
+                Annuler
+            </button>
+
+            <button id="offerSubmitButton"
+                    class="btn-save"
+                    onclick="handleOfferSubmit()">
+                Publier
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+<div class="fab-container">
+
+    <button class="fab-main"
+            onclick="toggleFabMenu()">
+        +
+    </button>
+
+    <div class="fab-menu" id="fabMenu">
+
+        <button onclick="openNewRequestModal()">
+            ➕ Créer une demande
+        </button>
+
+        <button onclick="openNewOfferModal()">
+            🛠️ Créer une offre
+        </button>
+
+    </div>
+
+</div>
+<div class="modal-overlay" id="publicationDetailModal">
+    <div class="profile-modal publication-detail-card">
+
+        <div class="publication-detail-icon" id="detailIcon">🛠️</div>
+
+        <h4 id="detailTitle">Titre publication</h4>
+
+        <p id="detailDescription"></p>
+        <div class="publication-detail-photos" id="detailPhotos"></div>
+
+        <div class="publication-detail-meta">
+            <p><strong>Auteur :</strong> <span id="detailAuthor"></span></p>
+            <p><strong>Type :</strong> <span id="detailType"></span></p>
+            <p><strong>Catégorie :</strong> <span id="detailCategory"></span></p>
+            <p><strong>Statut :</strong> <span id="detailStatus"></span></p>
+            <p><strong>Localisation :</strong> <span id="detailLocation"></span></p>
+            <p><strong>Distance :</strong> <span id="detailDistance"></span></p>
+            <p><strong>Date :</strong> <span id="detailDate"></span></p>
+            <p><strong>Montant :</strong> <span id="detailAmount"></span></p>
+        </div>
+        <div id="detailTrust" class="publication-detail-trust"></div>
+
+        <div class="modal-actions">
+            <span id="detailContactAction"></span>
+            <span id="detailFavoriteAction"></span>
+            <span id="detailShareAction"></span>
+            <span id="detailMapAction"></span>
+            <span id="detailStatusActions"></span>
+            <span id="detailReportActions"></span>
+            <button class="btn-cancel" onclick="closePublicationDetail()">
+                Fermer
+            </button>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal-overlay" id="reportModal">
+    <div class="profile-modal report-modal">
+        <h4 id="reportModalTitle">Signaler</h4>
+
+        <div class="report-options">
+            <button type="button" onclick="submitReport('SPAM')">Spam</button>
+            <button type="button" onclick="submitReport('SCAM')">Arnaque</button>
+            <button type="button" onclick="submitReport('INAPPROPRIATE_CONTENT')">Contenu inapproprié</button>
+        </div>
+
+        <textarea id="reportDetails"
+                  placeholder="Détails optionnels"></textarea>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeReportModal()">
+                Annuler
+            </button>
+        </div>
+    </div>
+</div>
+<div id="toastMessage" class="toast-message"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/dashboard/state.js"></script>
+<script src="assets/js/branding.js"></script>
+<script src="assets/js/dashboard/events.js"></script>
+<script src="assets/js/dashboard/currency.js"></script>
+<script src="assets/js/dashboard/auth.js"></script>
+<script src="assets/js/dashboard/sidebar.js"></script>
+<script src="assets/js/dashboard/feed.js"></script>
+<script src="assets/js/dashboard/api.js"></script>
+<script src="assets/js/dashboard/missions.js"></script>
+<script src="assets/js/dashboard/history.js"></script>
+<script src="assets/js/dashboard/notifications.js"></script>
+<script src="assets/js/dashboard/requests.js"></script>
+<script src="assets/js/dashboard/offers.js"></script>
+<script src="assets/js/dashboard/modals.js"></script>
+<script src="assets/js/dashboard/utils.js"></script>
+<script src="assets/js/dashboard/favorites.js"></script>
+<script src="assets/js/dashboard/chat.js"></script>
+<script src="assets/js/dashboard/admin-banners.js"></script>
+<script src="assets/js/dashboard/admin-branding.js"></script>
+<script src="assets/js/dashboard/main.js"></script>
+</body>
+</html>

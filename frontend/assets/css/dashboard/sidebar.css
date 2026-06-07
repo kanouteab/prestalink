@@ -1,0 +1,95 @@
+﻿.current-user-box {
+    background: rgba(255,255,255,0.18);
+    padding: 10px 16px;
+    border-radius: 18px;
+    text-align: right;
+}
+
+.current-user-box span {
+    display: block;
+    font-weight: 700;
+}
+
+.current-user-box small {
+    opacity: 0.9;
+}
+.user-menu {
+    position: relative;
+}
+
+.user-pill {
+    border: none;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    border-radius: 30px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.user-pill strong {
+    display: block;
+    font-size: 14px;
+}
+
+#currentUserVerification {
+    display: block;
+    margin-top: 4px;
+}
+
+#currentUserVerification .verified-profile-badge {
+    font-size: 10px;
+    padding: 4px 7px;
+}
+
+.user-pill small {
+    display: block;
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    background: white;
+    color: #0d6efd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 55px;
+    background: white;
+    min-width: 190px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    padding: 10px;
+    z-index: 20;
+}
+
+.user-dropdown.show {
+    display: block;
+}
+
+.user-dropdown button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 12px;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.user-dropdown button:hover {
+    background: #f1f5ff;
+}
+

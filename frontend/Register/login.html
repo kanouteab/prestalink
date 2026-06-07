@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Connexion - PrestaLink
+    </title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="">
+
+    <link rel="stylesheet"
+          href="login.css">
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <!-- LOGIN -->
+
+        <h1 id="prestalinkLoginLogo" class="prestalink-login-logo">
+            PrestaLink
+        </h1>
+
+        <p>
+            Connectez-vous à votre espace
+        </p>
+
+        <input id="emailInput"
+               type="email"
+               placeholder="Email"
+               required>
+
+        <input id="passwordInput"
+               type="password"
+               placeholder="Mot de passe"
+               required>
+
+        <button onclick="login()">
+            Connexion
+        </button>
+
+        <div id="message"></div>
+
+        <div class="auth-recovery-links">
+            <button type="button" class="auth-link-button" onclick="showRecoveryPanel('forgotPasswordPanel')">
+                Mot de passe oublié ?
+            </button>
+            <button type="button" class="auth-link-button" onclick="showRecoveryPanel('findEmailPanel')">
+                Email oublié ?
+            </button>
+        </div>
+
+        <div id="forgotPasswordPanel" class="recovery-panel hidden">
+            <h3>Réinitialiser le mot de passe</h3>
+            <input id="forgotPasswordEmailInput"
+                   type="email"
+                   placeholder="Email">
+            <button type="button" onclick="requestPasswordReset()">
+                Envoyer le lien
+            </button>
+            <input id="resetTokenInput"
+                   type="text"
+                   placeholder="Code de réinitialisation">
+            <input id="newPasswordInput"
+                   type="password"
+                   placeholder="Nouveau mot de passe">
+            <input id="confirmNewPasswordInput"
+                   type="password"
+                   placeholder="Confirmer le mot de passe">
+            <button type="button" onclick="resetPassword()">
+                Réinitialiser le mot de passe
+            </button>
+            <div id="passwordRecoveryMessage" class="recovery-message"></div>
+        </div>
+
+        <div id="findEmailPanel" class="recovery-panel hidden">
+            <h3>Retrouver mon compte</h3>
+            <input id="findEmailPhoneInput"
+                   type="tel"
+                   placeholder="Téléphone">
+            <input id="findEmailFullNameInput"
+                   type="text"
+                   placeholder="Nom complet">
+            <button type="button" onclick="findEmail()">
+                Retrouver mon compte
+            </button>
+            <div id="emailRecoveryMessage" class="recovery-message"></div>
+        </div>
+
+        <p class="auth-switch">
+            Vous n'avez pas de compte ?
+            <a href="register.html">Créer un compte</a>
+        </p>
+
+    </div>
+
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="login.js"></script>
+<script src="../assets/js/branding.js"></script>
+
+</body>
+
+</html>

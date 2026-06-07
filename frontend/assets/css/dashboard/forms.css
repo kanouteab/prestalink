@@ -1,0 +1,48 @@
+﻿.profile-modal textarea {
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    padding: 13px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    font-family: inherit;
+}
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-icon {
+    font-size: 54px;
+    margin-bottom: 14px;
+}
+
+.empty-state h5 {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.empty-state p {
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.empty-state small {
+    color: #6c757d;
+}
+.required-info {
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.required-info span {
+    color: red;
+    font-weight: bold;
+}
+.profile-modal h4,
+.required-info {
+    text-align: center;
+}
+

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>PrestaLink WebSocket Test</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+
+<h1>PrestaLink WebSocket Test</h1>
+
+<button onclick="connect()">Connexion WebSocket</button>
+
+<br><br>
+
+<input id="missionIdInput" placeholder="Mission ID">
+<button onclick="subscribeToChat()">Écouter le chat</button>
+
+<ul id="messages"></ul>
+
+<script>
+    let stompClient = null;
+    let chatSubscription = null;
+
+    function addMessage(text) {
+        const li = document.createElement('li');
+        li.innerText = text;
+        document.getElementById('messages').appendChild(li);
+    }
+
+    function connect() {
+        if (stompClient !== null && stompClient.connected) {
+            console.log("Déjà connecté");
+            return;
+        }
+
+        const socket = new SockJS('http://localhost:8080/ws-prestalink');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connecté : ' + frame);
+            addMessage("CONNECTÉ AU WEBSOCKET");
+
+            stompClient.subscribe('/topic/missions', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage(data.type + " | Mission ID: " + data.missionId + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/feed', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage(data.type + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/offers', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage(data.type + " | Offer ID: " + data.offerId + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/requests', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage(data.type + " | Request ID: " + data.requestId + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/dashboard', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage(data.type + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/users/1', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage("USER " + data.userId + " | " + data.type + " | " + data.title + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/users/2', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage("USER " + data.userId + " | " + data.type + " | " + data.title + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/users/3', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage("USER " + data.userId + " | " + data.type + " | " + data.title + " | " + data.message);
+            });
+
+            stompClient.subscribe('/topic/users/4', function(message) {
+                const data = JSON.parse(message.body);
+                addMessage("USER " + data.userId + " | " + data.type + " | " + data.title + " | " + data.message);
+            });
+        });
+    }
+
+    function subscribeToChat() {
+        if (stompClient === null || !stompClient.connected) {
+            addMessage("Connecte d'abord le WebSocket.");
+            return;
+        }
+
+        const missionId = document.getElementById('missionIdInput').value;
+
+        if (!missionId) {
+            addMessage("Entre un Mission ID.");
+            return;
+        }
+
+        if (chatSubscription !== null) {
+            chatSubscription.unsubscribe();
+            chatSubscription = null;
+        }
+
+        chatSubscription = stompClient.subscribe('/topic/missions/' + missionId + '/chat', function(message) {
+            const data = JSON.parse(message.body);
+
+            if (data.type === "USER_TYPING") {
+                addMessage(data.userName + " est en train d'écrire...");
+                return;
+            }
+
+            if (data.type === "CHAT_MESSAGE_READ") {
+                addMessage(
+                    "MESSAGE LU | Mission " +
+                    data.missionId +
+                    " | Message ID: " +
+                    data.messageId +
+                    " | Reader ID: " +
+                    data.readerId
+                );
+                return;
+            }
+
+            if (data.type === "CHAT_MESSAGE_SENT") {
+                let editedText = "";
+
+                if (data.isEdited === true) {
+                    editedText = " (Modifié)";
+                }
+
+                addMessage(
+                    "CHAT | Mission " +
+                    data.missionId +
+                    " | " +
+                    data.senderName +
+                    " : " +
+                    data.content +
+                    editedText
+                );
+                return;
+            }
+            if (data.type === "ALL_CHAT_MESSAGES_READ") {
+                addMessage(
+                    "TOUS LES MESSAGES LUS | Mission " +
+                    data.missionId +
+                    " | Reader ID: " +
+                    data.readerId
+                );
+                return;
+            }
+            if (data.type === "UNREAD_COUNT_UPDATED") {
+
+                addMessage(
+                    "MESSAGES NON LUS | Mission " +
+                    data.missionId +
+                    " | Count: " +
+                    data.unreadCount
+                );
+
+                return;
+            }
+            if (data.type === "CHAT_MESSAGE_DELETED") {
+                addMessage(
+                    "MESSAGE SUPPRIMÉ | Mission " +
+                    data.missionId +
+                    " | Message ID: " +
+                    data.messageId +
+                    " | User ID: " +
+                    data.readerId
+                );
+                return;
+            }
+            if (data.type === "CHAT_MESSAGE_UPDATED") {
+
+                let editedText = "";
+
+                if (data.isEdited === true) {
+                    editedText = " (Modifié)";
+                }
+
+                addMessage(
+                    "CHAT | Mission " +
+                    data.missionId +
+                    " | " +
+                    data.senderName +
+                    " : " +
+                    data.content +
+                    editedText
+                );
+
+                return;
+            }
+
+            addMessage("Événement chat inconnu : " + JSON.stringify(data));
+        });
+
+        addMessage("Abonné au chat de la mission " + missionId);
+    }
+</script>
+
+</body>
+</html>

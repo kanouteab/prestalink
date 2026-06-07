@@ -1,0 +1,449 @@
+﻿.mission-card {
+    transition: 0.2s ease;
+}
+
+.mission-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.app-header {
+    background: linear-gradient(135deg, var(--primary-color, #0d6efd), var(--secondary-color, #6610f2));
+    color: white;
+    padding: 26px 30px;
+    border-radius: 22px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 12px 30px rgba(13, 110, 253, 0.25);
+}
+
+.dashboard-header-brand {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    min-width: 0;
+}
+
+.dashboard-header-logo {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 14px;
+    color: white;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 15px;
+    font-weight: 800;
+    height: 64px;
+    justify-content: center;
+    padding: 8px 10px;
+    width: 64px;
+}
+
+.dashboard-header-logo.has-branding-image {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.dashboard-header-logo img {
+    display: block;
+    height: 100%;
+    max-height: 56px;
+    max-width: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+.dashboard-header-copy {
+    min-width: 0;
+}
+
+.app-header h2,
+.dynamic-header h4 {
+    font-family: "Poppins", "Inter", "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(1.45rem, 2vw, 2rem);
+    letter-spacing: 0.5px;
+    line-height: 1.12;
+    margin: 0;
+    font-weight: 700;
+    text-rendering: geometricPrecision;
+}
+
+.app-header p,
+.dynamic-header p {
+    font-family: "Inter", "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(0.78rem, 1vw, 0.95rem);
+    font-weight: 650;
+    letter-spacing: 1.6px;
+    line-height: 1.35;
+    margin: 5px 0 0;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.stat-card {
+    min-height: 145px;
+    border-radius: 22px;
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: 0.25s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px) scale(1.01);
+}
+
+.stat-users {
+    background: linear-gradient(135deg, #0d6efd, #4dabf7);
+}
+
+.stat-missions {
+    background: linear-gradient(135deg, #198754, #51cf66);
+}
+
+.stat-providers {
+    background: linear-gradient(135deg, #fd7e14, #ffb347);
+}
+
+.stat-requests {
+    background: linear-gradient(135deg, #dc3545, #ff6b6b);
+}
+
+.stat-title {
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.marquee {
+    animation: titleScroll 8s linear infinite;
+}
+
+@keyframes titleScroll {
+    0% {
+        transform: translateX(0);
+    }
+    45% {
+        transform: translateX(-35%);
+    }
+    90% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.stat-value {
+    font-size: 42px;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
+.stat-card small {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .dashboard-header-logo {
+        height: 48px;
+        width: 48px;
+    }
+
+    .dashboard-header-logo img {
+        max-height: 42px;
+    }
+}
+#dynamicView {
+    min-height: 180px;
+}
+
+.home-welcome {
+    background: #ffffff;
+    border: 1px solid #e7edf5;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.home-welcome-kicker {
+    color: var(--primary-color, #0d6efd);
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.home-welcome h3 {
+    color: #1f2937;
+    font-size: 1.25rem;
+    margin: 0 0 8px;
+}
+
+.home-welcome p {
+    color: #64748b;
+    margin: 0;
+}
+
+.home-quick-access {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.home-quick-card {
+    background: #ffffff;
+    border: 1px solid #dbe7ff;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+}
+
+.home-quick-card:hover,
+.home-quick-card:focus {
+    border-color: var(--primary-color, #0d6efd);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.home-quick-card strong {
+    color: #1f2937;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.home-quick-card span {
+    color: #64748b;
+    font-size: 0.92rem;
+}
+
+.dynamic-item {
+    padding: 12px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    margin-bottom: 10px;
+    transition: 0.2s ease;
+}
+
+.dynamic-item:hover {
+    background: #eef4ff;
+}
+.dynamic-dashboard {
+    overflow: hidden;
+}
+
+.dynamic-header {
+    background: linear-gradient(
+        135deg,
+        var(--primary-color, #0d6efd),
+        var(--secondary-color, #6610f2)
+    );
+    border-radius: 18px;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--primary-color, #0d6efd) 22%, transparent);
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding: 22px 24px;
+}
+
+.dynamic-header p {
+    max-width: 680px;
+}
+
+.live-indicator {
+    background: #e8fff1;
+    color: #198754;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background: #198754;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.4);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.dynamic-stats {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.mini-stat {
+    flex: 1;
+    min-width: 180px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.mini-label {
+    display: block;
+    color: #6c757d;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.dynamic-content {
+    flex: 1 1 auto;
+    margin-top: 20px;
+    min-height: 0;
+}
+
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #e7edf5;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    border-color: #b8cff5;
+}
+
+.summary-card span {
+    display: block;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.summary-card strong {
+    color: #111827;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.fallback-note {
+    background: #fff8db;
+    border: 1px solid #ffe08a;
+    border-radius: 12px;
+    color: #7c4d00;
+    font-weight: 700;
+    padding: 12px 14px;
+}
+
+.welcome-panel {
+    text-align: center;
+    padding: 30px;
+}
+
+.welcome-panel h5 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.promo-banner {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    border-radius: 24px;
+    padding: 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.promo-content {
+    max-width: 70%;
+}
+
+.promo-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.promo-banner h3 {
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.promo-banner p {
+    opacity: 0.92;
+    margin-bottom: 20px;
+}
+
+.promo-btn {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.promo-image {
+    font-size: 90px;
+    opacity: 0.18;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .promo-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .promo-content {
+        max-width: 100%;
+    }
+
+    .promo-image {
+        margin-top: 20px;
+    }
+}

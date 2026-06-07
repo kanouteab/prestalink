@@ -1,0 +1,58 @@
+﻿.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.profile-modal {
+    background: white;
+    width: 100%;
+    max-width: 460px;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+.profile-modal h4 {
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.profile-modal input,
+.profile-modal select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 14px;
+    margin-bottom: 14px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-cancel,
+.btn-save {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 12px;
+}
+
+.btn-cancel {
+    background: #f1f3f5;
+}
+
+.btn-save {
+    background: #0d6efd;
+    color: white;
+}

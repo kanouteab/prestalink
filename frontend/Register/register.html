@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un compte - PrestaLink</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h1>PrestaLink</h1>
+        <p>Créer un nouveau compte</p>
+        <p class="required-info">
+            Les champs marqués par <span>*</span> sont obligatoires.
+        </p>
+
+        <input id="fullNameRegister"
+               placeholder="Nom complet *"
+               required>
+
+        <input id="emailRegister"
+               type="email"
+               placeholder="Email *"
+               required>
+        <select id="countryRegister" required onchange="handleCountryChange()">
+            <option value="">Pays de résidence *</option>
+            <option value="Canada">Canada</option>
+            <option value="United States">United States</option>
+            <option value="Mauritanie">Mauritanie</option>
+            <option value="Senegal">Senegal</option>
+            <option value="Mali">Mali</option>
+            <option value="France">France</option>
+            <option value="Maroc">Maroc</option>
+            <option value="Algerie">Algerie</option>
+            <option value="Tunisie">Tunisie</option>
+            <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+            <option value="Autre">Autre</option>
+        </select>
+
+        <input id="customCountryRegister"
+               style="display:none"
+               placeholder="Nom du pays *">
+
+        <input id="customCurrencyRegister"
+               style="display:none"
+               placeholder="Symbole ou code devise *">
+        <div class="phone-group">
+            <span id="countryFlag" class="country-flag">🌍</span>
+
+            <input id="countryCodeRegister"
+                   class="country-code-input"
+                   placeholder="+"
+                   readonly>
+
+            <input id="phoneRegister"
+                   placeholder="Téléphone *"
+                   required>
+        </div>
+
+        <input id="passwordRegister"
+               type="password"
+               placeholder="Mot de passe *"
+               required>
+
+        <input id="confirmPasswordRegister"
+               type="password"
+               placeholder="Répéter le mot de passe *"
+               required>
+        <div class="password-rules">
+
+            <p><strong>Le mot de passe doit :</strong></p>
+
+            <ul>
+                <li>✔ Contenir entre 8 et 12 caractères</li>
+                <li>✔ Commencer par une lettre majuscule</li>
+                <li>✔ Contenir entre 1 et 4 chiffres</li>
+                <li>✔ Contenir exactement 1 caractère spécial</li>
+                <li>✔ Caractères spéciaux autorisés : @ # $ % ! *</li>
+                <li>✔ Correspondre au mot de passe de confirmation</li>
+            </ul>
+
+        </div>
+        <input id="streetAddressRegister"
+               placeholder="Adresse postale : No + nom de la rue"
+               required>
+
+        <input id="postalCodeRegister"
+               placeholder="Code postal"
+               required>
+
+
+
+
+
+        <button onclick="register()">Créer le compte</button>
+
+        <p class="auth-switch">
+            Vous avez déjà un compte ?
+            <a href="login.html">Se connecter</a>
+        </p>
+
+        <div id="message"></div>
+
+    </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="register.js"></script>
+
+</body>
+</html>
