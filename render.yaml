@@ -3,19 +3,4 @@ services:
     name: prestalink-api
     env: java
     buildCommand: chmod +x mvnw && ./mvnw clean package -DskipTests
-    startCommand: java -jar target/prestalink-api-0.0.1-SNAPSHOT.jar
-    envVars:
-      - key: JDBC_DATABASE_URL
-        sync: false
-      - key: DB_USERNAME
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: JPA_DDL_AUTO
-        value: update
-      - key: JPA_SHOW_SQL
-        value: false
-      - key: CORS_ALLOWED_ORIGIN_PATTERNS
-        sync: false
-      - key: APP_PUBLIC_BASE_URL
-        sync: false
+    startCommand: java -jar target/*.jar
