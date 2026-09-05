@@ -1,0 +1,64 @@
+.wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: var(--space-xxxl) var(--space-xl) 100px;
+}
+
+.card {
+  background: var(--color-surface1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.roleRow {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.roleOption {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-md);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+}
+
+.roleOption.selected {
+  border-color: var(--color-brand);
+  background: var(--color-brand-tint);
+  color: var(--color-brand);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footNote {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-ink500);
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 13px;
+}

@@ -1,8 +1,17 @@
 export { Button } from './Button/Button.js';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './Button/Button.js';
 
+export { LinkButton } from './Button/LinkButton.js';
+export type { LinkButtonProps } from './Button/LinkButton.js';
+
 export { Input } from './Input/Input.js';
 export type { InputProps } from './Input/Input.js';
+
+export { Textarea } from './Input/Textarea.js';
+export type { TextareaProps } from './Input/Textarea.js';
+
+export { Select } from './Input/Select.js';
+export type { SelectProps } from './Input/Select.js';
 
 export { Chip } from './Chip/Chip.js';
 export type { ChipProps } from './Chip/Chip.js';
@@ -24,3 +33,6 @@ export type { EmptyStateProps } from './EmptyState/EmptyState.js';
 
 export { ToastProvider, useToast } from './Toast/ToastProvider.js';
 export type { ToastType } from './Toast/ToastProvider.js';
+
+export { ConfirmDialog } from './Dialog/ConfirmDialog.js';
+export type { ConfirmDialogProps } from './Dialog/ConfirmDialog.js';

@@ -1,0 +1,51 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-xl) 100px;
+}
+
+.narrow {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-xl) 100px;
+}
+
+.pageHeader {
+  margin-bottom: var(--space-xl);
+}
+
+.pageHeader p {
+  color: var(--color-ink500);
+  max-width: 60ch;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.section {
+  margin-bottom: var(--space-xxxl);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.sectionHead h2 {
+  font-size: 19px;
+  font-weight: 600;
+}

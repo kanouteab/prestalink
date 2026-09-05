@@ -27,3 +27,12 @@ export function formatCurrency(amount: number, currency = 'XOF'): string {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+export function initials(fullName: string): string {
+  return fullName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+}

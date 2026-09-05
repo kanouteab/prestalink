@@ -1,0 +1,59 @@
+.tabs {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface1);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: var(--color-ink500);
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: 2px;
+}
+
+.amount {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  flex: none;
+  width: 110px;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex: none;
+}
