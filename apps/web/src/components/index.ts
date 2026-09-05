@@ -36,3 +36,6 @@ export type { ToastType } from './Toast/ToastProvider.js';
 
 export { ConfirmDialog } from './Dialog/ConfirmDialog.js';
 export type { ConfirmDialogProps } from './Dialog/ConfirmDialog.js';
+
+export { StarRating } from './StarRating/StarRating.js';
+export type { StarRatingProps } from './StarRating/StarRating.js';

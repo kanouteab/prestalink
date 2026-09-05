@@ -3,9 +3,10 @@ import type { PublicationType } from '@prestalink/shared-types';
 import { useOffer } from '../../hooks/useOffers';
 import { useRequest } from '../../hooks/useRequests';
 import { useFavoriteToggle } from '../../hooks/useFavoriteToggle';
+import { useAcceptRequest } from '../../hooks/useMissions';
 import { useAuthStore, useIsAuthenticated } from '../../store/authStore';
 import { buildDirectConversationKey } from '../../utils/chatKey';
-import { Badge, Button, Chip, FavoriteButton, PublicationStatusBadge, PublicationTypeBadge } from '../../components';
+import { Badge, Button, Chip, FavoriteButton, PublicationStatusBadge, PublicationTypeBadge, useToast } from '../../components';
 import { formatCurrency, formatRelativeDate, initials } from '../../utils/format';
 import shared from '../shared.module.css';
 import styles from './PublicationDetailPage.module.css';
@@ -113,6 +114,26 @@ function RequestDetail({ id }: { id: number | undefined }) {
 
 function RequestDetailView({ request, favoriteState }: { request: NonNullable<ReturnType<typeof useRequest>['data']>; favoriteState: ReturnType<typeof useFavoriteToggle> }) {
   const { onContact, isOwnPublication } = useContactAction(request.client.id, request.client.fullName, 'REQUEST', request.id, request.title);
+  const currentUser = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const acceptRequest = useAcceptRequest();
+
+  const canAccept = currentUser?.role === 'PRESTATAIRE' && !isOwnPublication && request.status === 'AVAILABLE';
+
+  const onAccept = () => {
+    if (!currentUser) return;
+    acceptRequest.mutate(
+      { clientId: request.client.id, providerId: currentUser.id, requestId: request.id },
+      {
+        onSuccess: () => {
+          showToast('Demande acceptee : mission creee', 'success');
+          navigate('/app/missions');
+        },
+        onError: () => showToast("Impossible d'accepter cette demande", 'error'),
+      },
+    );
+  };
 
   return (
     <div className={shared.page}>
@@ -137,8 +158,13 @@ function RequestDetailView({ request, favoriteState }: { request: NonNullable<Re
             <span className={styles.authorAvatar}>{initials(request.client.fullName)}</span>
             <div style={{ fontWeight: 700 }}>{request.client.fullName}</div>
           </div>
+          {canAccept && (
+            <Button variant="primary" onClick={onAccept} loading={acceptRequest.isPending}>
+              Accepter cette demande
+            </Button>
+          )}
           {!isOwnPublication && (
-            <Button variant="primary" onClick={onContact}>
+            <Button variant={canAccept ? 'secondary' : 'primary'} onClick={onContact}>
               Contacter
             </Button>
           )}

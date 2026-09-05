@@ -22,6 +22,7 @@ import { FavoritesPage } from '../pages/app/FavoritesPage';
 import { MessagesPage } from '../pages/app/MessagesPage';
 import { ChatPage } from '../pages/app/ChatPage';
 import { NotificationsPage } from '../pages/app/NotificationsPage';
+import { MissionsPage } from '../pages/app/MissionsPage';
 
 import { DesignSystemShowcasePage } from '../pages/DesignSystemShowcasePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
           { path: '/app/messages', element: <MessagesPage /> },
           { path: '/app/messages/chat', element: <ChatPage /> },
           { path: '/app/notifications', element: <NotificationsPage /> },
+          { path: '/app/missions', element: <MissionsPage /> },
         ],
       },
     ],

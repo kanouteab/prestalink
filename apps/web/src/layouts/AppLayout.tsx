@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { to: '/app/explorer', label: 'Explorer', icon: '🔍' },
   { to: '/app/publier', label: 'Publier', icon: '➕' },
   { to: '/app/publications', label: 'Mes publications', icon: '📄' },
+  { to: '/app/missions', label: 'Missions', icon: '🧾' },
   { to: '/app/messages', label: 'Messages', icon: '💬' },
   { to: '/app/favoris', label: 'Favoris', icon: '♥' },
 ];
