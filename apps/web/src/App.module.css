@@ -1,0 +1,45 @@
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-xl) 100px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xxxl);
+}
+
+.header p {
+  color: var(--color-ink500);
+  max-width: 60ch;
+}
+
+.section {
+  margin-bottom: var(--space-xxxl);
+}
+
+.section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-lg);
+  background: var(--color-surface1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+}

@@ -1,0 +1,40 @@
+{
+  "name": "@prestalink/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.1.1",
+    "@tanstack/react-query": "^5.62.7",
+    "zustand": "^5.0.2",
+    "react-hook-form": "^7.54.2",
+    "@hookform/resolvers": "^3.9.1",
+    "zod": "^3.24.1",
+    "@prestalink/design-tokens": "*",
+    "@prestalink/shared-types": "*",
+    "@prestalink/api-client": "*",
+    "@prestalink/validation": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2",
+    "storybook": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0"
+  }
+}

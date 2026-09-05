@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Monorepo JS/TS (apps/, packages/) ###
+node_modules/
+apps/*/dist/
+apps/web/dist/
+apps/web/storybook-static/
+apps/mobile/.expo/
+apps/mobile/dist/
+packages/*/dist/
+*.tsbuildinfo
+.turbo/
+npm-debug.log*
+

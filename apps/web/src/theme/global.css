@@ -1,0 +1,45 @@
+@import '@prestalink/design-tokens/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface0);
+  color: var(--color-ink900);
+  font-family: 'Public Sans', 'Segoe UI', system-ui, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  margin: 0;
+  text-wrap: balance;
+}
+
+code,
+.mono {
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+a {
+  color: var(--color-brand);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}

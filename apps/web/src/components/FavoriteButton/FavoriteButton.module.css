@@ -1,0 +1,27 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-ink500);
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.button:hover {
+  transform: scale(1.08);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.active {
+  color: var(--color-demande);
+}

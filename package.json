@@ -1,0 +1,21 @@
+{
+  "name": "prestalink-platform",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Monorepo de la refonte PrestaLink : Web (React), Mobile (React Native/Expo) et packages partages, sur le backend Spring Boot existant.",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "build:tokens": "npm run build --workspace=@prestalink/design-tokens",
+    "build:packages": "npm run build --workspace=@prestalink/design-tokens && npm run build --workspace=@prestalink/shared-types && npm run build --workspace=@prestalink/validation && npm run build --workspace=@prestalink/api-client",
+    "dev:web": "npm run dev --workspace=@prestalink/web",
+    "dev:mobile": "npm run start --workspace=@prestalink/mobile",
+    "storybook": "npm run storybook --workspace=@prestalink/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"apps/**/src/**/*.{ts,tsx}\" \"packages/**/src/**/*.ts\""
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "prettier": "^3.4.2"
+  }
+}
