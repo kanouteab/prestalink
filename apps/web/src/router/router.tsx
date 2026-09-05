@@ -19,6 +19,8 @@ import { MyPublicationsPage } from '../pages/app/MyPublicationsPage';
 import { EditOfferPage } from '../pages/app/EditOfferPage';
 import { EditRequestPage } from '../pages/app/EditRequestPage';
 import { FavoritesPage } from '../pages/app/FavoritesPage';
+import { MessagesPage } from '../pages/app/MessagesPage';
+import { ChatPage } from '../pages/app/ChatPage';
 
 import { DesignSystemShowcasePage } from '../pages/DesignSystemShowcasePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -51,6 +53,8 @@ export const router = createBrowserRouter([
           { path: '/app/publications/offres/:id/modifier', element: <EditOfferPage /> },
           { path: '/app/publications/demandes/:id/modifier', element: <EditRequestPage /> },
           { path: '/app/favoris', element: <FavoritesPage /> },
+          { path: '/app/messages', element: <MessagesPage /> },
+          { path: '/app/messages/chat', element: <ChatPage /> },
         ],
       },
     ],

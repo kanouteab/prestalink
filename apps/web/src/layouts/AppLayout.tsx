@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { Button } from '../components';
 import { useAuthStore } from '../store/authStore';
 import { useLogout } from '../hooks/useAuth';
+import { useRealtimeConnection } from '../hooks/useRealtimeConnection';
 import styles from './AppLayout.module.css';
 
 const NAV_ITEMS = [
@@ -9,12 +10,14 @@ const NAV_ITEMS = [
   { to: '/app/explorer', label: 'Explorer', icon: '🔍' },
   { to: '/app/publier', label: 'Publier', icon: '➕' },
   { to: '/app/publications', label: 'Mes publications', icon: '📄' },
+  { to: '/app/messages', label: 'Messages', icon: '💬' },
   { to: '/app/favoris', label: 'Favoris', icon: '♥' },
 ];
 
 export function AppLayout() {
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
+  useRealtimeConnection();
 
   return (
     <div className={styles.shell}>

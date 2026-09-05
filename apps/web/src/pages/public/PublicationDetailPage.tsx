@@ -1,10 +1,11 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import type { PublicationType } from '@prestalink/shared-types';
 import { useOffer } from '../../hooks/useOffers';
 import { useRequest } from '../../hooks/useRequests';
 import { useFavoriteToggle } from '../../hooks/useFavoriteToggle';
+import { useAuthStore, useIsAuthenticated } from '../../store/authStore';
+import { buildDirectConversationKey } from '../../utils/chatKey';
 import { Badge, Button, Chip, FavoriteButton, PublicationStatusBadge, PublicationTypeBadge } from '../../components';
-import { useToast } from '../../components';
 import { formatCurrency, formatRelativeDate, initials } from '../../utils/format';
 import shared from '../shared.module.css';
 import styles from './PublicationDetailPage.module.css';
@@ -21,12 +22,48 @@ export function PublicationDetailPage() {
   return type === 'OFFER' ? <OfferDetail id={id} /> : <RequestDetail id={id} />;
 }
 
+function useContactAction(
+  otherUserId: number,
+  otherUserName: string,
+  publicationType: PublicationType,
+  publicationId: number,
+  publicationTitle: string,
+) {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+  const currentUserId = useAuthStore((state) => state.user?.id);
+  const isOwnPublication = currentUserId === otherUserId;
+
+  const onContact = () => {
+    if (!isAuthenticated) {
+      navigate('/connexion');
+      return;
+    }
+    const context = {
+      conversationKey: buildDirectConversationKey(currentUserId!, otherUserId, publicationType, publicationId),
+      otherUserId,
+      otherUserName,
+      publicationType,
+      publicationId,
+      publicationTitle,
+    };
+    navigate('/app/messages/chat', { state: context });
+  };
+
+  return { onContact, isOwnPublication };
+}
+
 function OfferDetail({ id }: { id: number | undefined }) {
   const { data: offer, isLoading } = useOffer(id);
   const favoriteState = useFavoriteToggle('OFFER', id ?? 0);
-  const { showToast } = useToast();
 
   if (isLoading || !offer) return <div className={shared.page}>Chargement...</div>;
+
+  return <OfferDetailView offer={offer} favoriteState={favoriteState} />;
+}
+
+function OfferDetailView({ offer, favoriteState }: { offer: NonNullable<ReturnType<typeof useOffer>['data']>; favoriteState: ReturnType<typeof useFavoriteToggle> }) {
+  const { onContact, isOwnPublication } = useContactAction(offer.provider.id, offer.provider.fullName, 'OFFER', offer.id, offer.title);
 
   return (
     <div className={shared.page}>
@@ -54,9 +91,11 @@ function OfferDetail({ id }: { id: number | undefined }) {
               {offer.provider.trustBadge && <Badge tone="success">{offer.provider.trustBadge}</Badge>}
             </div>
           </div>
-          <Button variant="primary" onClick={() => showToast('Messagerie disponible prochainement', 'info')}>
-            Contacter
-          </Button>
+          {!isOwnPublication && (
+            <Button variant="primary" onClick={onContact}>
+              Contacter
+            </Button>
+          )}
         </aside>
       </div>
     </div>
@@ -66,9 +105,14 @@ function OfferDetail({ id }: { id: number | undefined }) {
 function RequestDetail({ id }: { id: number | undefined }) {
   const { data: request, isLoading } = useRequest(id);
   const favoriteState = useFavoriteToggle('REQUEST', id ?? 0);
-  const { showToast } = useToast();
 
   if (isLoading || !request) return <div className={shared.page}>Chargement...</div>;
+
+  return <RequestDetailView request={request} favoriteState={favoriteState} />;
+}
+
+function RequestDetailView({ request, favoriteState }: { request: NonNullable<ReturnType<typeof useRequest>['data']>; favoriteState: ReturnType<typeof useFavoriteToggle> }) {
+  const { onContact, isOwnPublication } = useContactAction(request.client.id, request.client.fullName, 'REQUEST', request.id, request.title);
 
   return (
     <div className={shared.page}>
@@ -93,9 +137,11 @@ function RequestDetail({ id }: { id: number | undefined }) {
             <span className={styles.authorAvatar}>{initials(request.client.fullName)}</span>
             <div style={{ fontWeight: 700 }}>{request.client.fullName}</div>
           </div>
-          <Button variant="primary" onClick={() => showToast('Messagerie disponible prochainement', 'info')}>
-            Contacter
-          </Button>
+          {!isOwnPublication && (
+            <Button variant="primary" onClick={onContact}>
+              Contacter
+            </Button>
+          )}
         </aside>
       </div>
     </div>

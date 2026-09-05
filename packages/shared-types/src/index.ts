@@ -6,3 +6,4 @@ export * from './chat.js';
 export * from './notification.js';
 export * from './history.js';
 export * from './auth.js';
+export * from './realtime.js';

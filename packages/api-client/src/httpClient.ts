@@ -53,6 +53,11 @@ export class ApiClient {
     this.timeoutMs = options.timeoutMs ?? 15000;
   }
 
+  /** Expose pour construire l'URL du endpoint STOMP (`{baseUrl}/ws-prestalink`) sans dupliquer la config. */
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   /** Prefixe les URLs relatives renvoyees par le backend (ex. /uploads/offer/x.jpg). */
   resolveAssetUrl(relativeUrl: string): string {
     if (/^https?:\/\//i.test(relativeUrl)) return relativeUrl;
