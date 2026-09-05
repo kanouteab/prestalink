@@ -92,6 +92,12 @@
   letter-spacing: 0.05em;
 }
 
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-lg);
+}
+
 .main {
   padding: var(--space-xl);
   min-width: 0;

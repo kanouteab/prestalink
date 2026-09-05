@@ -3,6 +3,8 @@ import { Button } from '../components';
 import { useAuthStore } from '../store/authStore';
 import { useLogout } from '../hooks/useAuth';
 import { useRealtimeConnection } from '../hooks/useRealtimeConnection';
+import { useNotificationsRealtime } from '../hooks/useNotifications';
+import { NotificationBell } from '../features/notifications/NotificationBell';
 import styles from './AppLayout.module.css';
 
 const NAV_ITEMS = [
@@ -18,6 +20,7 @@ export function AppLayout() {
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
   useRealtimeConnection();
+  useNotificationsRealtime();
 
   return (
     <div className={styles.shell}>
@@ -46,6 +49,9 @@ export function AppLayout() {
         </div>
       </aside>
       <main className={styles.main}>
+        <div className={styles.topbar}>
+          <NotificationBell />
+        </div>
         <Outlet />
       </main>
     </div>

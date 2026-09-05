@@ -1,0 +1,126 @@
+.wrap {
+  position: relative;
+}
+
+.button {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface1);
+  font-size: 17px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.button:hover {
+  background: var(--color-surface2);
+}
+
+.dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 340px;
+  max-height: 420px;
+  overflow-y: auto;
+  background: var(--color-surface1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(18, 20, 42, 0.14);
+  z-index: 50;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panelHead h3 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.panelHead button {
+  background: none;
+  border: none;
+  color: var(--color-brand);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.item {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  background: none;
+  border-left: 3px solid transparent;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  background: var(--color-surface2);
+}
+
+.item.unread {
+  border-left-color: var(--color-brand);
+  background: var(--color-brand-tint);
+}
+
+.itemIcon {
+  font-size: 16px;
+  flex: none;
+}
+
+.itemTitle {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.itemMessage {
+  font-size: 12.5px;
+  color: var(--color-ink500);
+}
+
+.itemTime {
+  font-size: 11px;
+  color: var(--color-ink300);
+  margin-top: 2px;
+}
+
+.panelFoot {
+  padding: var(--space-sm) var(--space-lg);
+  text-align: center;
+}
