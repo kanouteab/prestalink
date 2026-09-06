@@ -61,7 +61,21 @@ public class SecurityConfig {
         configuration.setExposedHeaders(List.of("Location"));
         configuration.setAllowCredentials(false);
 
+        // Le handshake SockJS (/ws-prestalink/info, .../xhr_streaming, ...) est
+        // envoye par le navigateur avec `withCredentials: true` ; sans
+        // Access-Control-Allow-Credentials: true en reponse, le navigateur
+        // bloque la negociation et le chat/notifications temps reel ne se
+        // connectent jamais. La config CORS ci-dessus (allowCredentials=false,
+        // partagee par le reste de l'API) ecrasait sinon celle, plus permissive,
+        // deja definie sur l'endpoint STOMP lui-meme (WebSocketConfig).
+        CorsConfiguration webSocketConfiguration = new CorsConfiguration();
+        webSocketConfiguration.setAllowedOriginPatterns(parseCsv(allowedOriginPatterns));
+        webSocketConfiguration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+        webSocketConfiguration.setAllowedHeaders(List.of("*"));
+        webSocketConfiguration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/ws-prestalink/**", webSocketConfiguration);
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
