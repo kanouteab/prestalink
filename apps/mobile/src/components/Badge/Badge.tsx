@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { publicationStatusColor, type StatusColorRole } from '@prestalink/design-tokens';
+import { publicationStatusColor, missionStatusColor, type StatusColorRole } from '@prestalink/design-tokens';
 import { useTheme } from '../../theme/ThemeProvider';
 
 export type BadgeTone = StatusColorRole | 'offre' | 'demande';
@@ -35,10 +35,19 @@ const STATUS_LABELS: Record<string, string> = {
   COMPLETED: 'Terminee',
   SUSPENDED: 'Suspendue',
   EXPIRED: 'Expiree',
+  EN_ATTENTE: 'En attente',
+  EN_COURS: 'En cours',
+  TERMINEE: 'Terminee',
+  ANNULEE: 'Annulee',
 };
 
 export function PublicationStatusBadge({ status }: { status: string }) {
   const tone = (publicationStatusColor[status] ?? 'neutral') as BadgeTone;
+  return <Badge tone={tone}>{STATUS_LABELS[status] ?? status}</Badge>;
+}
+
+export function MissionStatusBadge({ status }: { status: string }) {
+  const tone = (missionStatusColor[status] ?? 'neutral') as BadgeTone;
   return <Badge tone={tone}>{STATUS_LABELS[status] ?? status}</Badge>;
 }
 

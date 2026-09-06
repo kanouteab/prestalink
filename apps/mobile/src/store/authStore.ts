@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { UserResponse } from '@prestalink/shared-types';
 import { readToken, readUser, writeSession, clearStoredSession } from '../services/authStorage';
+import { clearRecentConversations } from '../services/recentConversations';
 
 interface AuthState {
   user: UserResponse | null;
@@ -36,6 +37,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
   clearSession: async () => {
     await clearStoredSession();
+    await clearRecentConversations();
     set({ user: null, token: null });
   },
 }));
