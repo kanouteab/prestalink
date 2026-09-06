@@ -79,6 +79,18 @@
   padding-top: var(--space-lg);
 }
 
+.profileLink {
+  display: block;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  margin: -6px -8px;
+}
+
+.profileLink:hover {
+  background: var(--color-surface2);
+}
+
 .userName {
   font-size: 13px;
   font-weight: 700;

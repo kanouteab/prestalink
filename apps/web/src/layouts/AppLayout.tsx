@@ -39,10 +39,10 @@ export function AppLayout() {
         </nav>
         <div className={styles.sidebarFoot}>
           {user && (
-            <div>
+            <NavLink to="/app/profil" className={styles.profileLink}>
               <div className={styles.userName}>{user.fullName}</div>
               <div className={styles.userRole}>{user.role === 'PRESTATAIRE' ? 'Prestataire' : 'Client'}</div>
-            </div>
+            </NavLink>
           )}
           <Button variant="secondary" size="sm" onClick={() => logout.mutate()} loading={logout.isPending}>
             Se deconnecter
