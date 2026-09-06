@@ -27,10 +27,12 @@ export function useMyRequests() {
   };
 }
 
+/** `clientId` est obligatoire cote backend (livrable H) : toujours l'utilisateur courant, jamais deduit d'un jeton. */
 export function useCreateRequest() {
   const queryClient = useQueryClient();
+  const clientId = useAuthStore((state) => state.user?.id);
   return useMutation({
-    mutationFn: (input: RequestInput) => api.requests.create(input),
+    mutationFn: (input: RequestInput) => api.requests.create(input, clientId!),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['requests'] }),
   });
 }

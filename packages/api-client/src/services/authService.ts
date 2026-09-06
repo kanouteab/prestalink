@@ -1,7 +1,6 @@
 import type { ApiClient } from '../httpClient.js';
 import type {
   LoginRequest,
-  LoginResult,
   RegisterRequest,
   ForgotPasswordRequest,
   ResetPasswordRequest,
@@ -13,12 +12,13 @@ export function createAuthService(client: ApiClient) {
     register: (payload: RegisterRequest) =>
       client.post<UserResponse>('/api/auth/register', payload, { auth: false }),
 
-    login: (payload: LoginRequest) =>
-      client.post<LoginResult>('/api/auth/login', payload, { auth: false }),
-
-    logout: () => client.post<void>('/api/auth/logout'),
-
-    me: () => client.get<UserResponse>('/api/auth/me'),
+    /**
+     * Pas de systeme de session cote backend (livrable H) : renvoie l'utilisateur
+     * directement (pas de `{user, token}`), et il n'existe ni `/api/auth/logout`
+     * ni `/api/auth/me` — la "session" est geree entierement cote client
+     * (voir authStore : on retient juste l'id utilisateur).
+     */
+    login: (payload: LoginRequest) => client.post<UserResponse>('/api/auth/login', payload, { auth: false }),
 
     sendVerificationEmail: () => client.post<void>('/api/auth/send-verification-email', undefined, { auth: false }),
     verifyEmail: (token: string) => client.get<void>('/api/auth/verify-email', { token }, { auth: false }),

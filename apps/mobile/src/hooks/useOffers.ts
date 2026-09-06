@@ -28,10 +28,12 @@ export function useMyOffers() {
   };
 }
 
+/** `providerId` est obligatoire cote backend (livrable H) : toujours l'utilisateur courant, jamais deduit d'un jeton. */
 export function useCreateOffer() {
   const queryClient = useQueryClient();
+  const providerId = useAuthStore((state) => state.user?.id);
   return useMutation({
-    mutationFn: (input: OfferInput) => api.offers.create(input),
+    mutationFn: (input: OfferInput) => api.offers.create(input, providerId!),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['offers'] }),
   });
 }

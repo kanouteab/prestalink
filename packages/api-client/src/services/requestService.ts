@@ -10,11 +10,12 @@ export function createRequestService(client: ApiClient) {
 
     get: (id: number) => client.get<RequestResponse>(`/api/requests/${id}`, undefined, { auth: false }),
 
-    create: (input: RequestInput) =>
-      client.post<RequestResponse>('/api/requests', input, { query: { categoryId: input.categoryId } }),
+    /** `clientId` est un @RequestParam obligatoire cote backend (pas deduit d'un jeton) : toujours l'id de l'utilisateur courant. */
+    create: (input: RequestInput, clientId: number) =>
+      client.post<RequestResponse>('/api/requests', input, { query: { clientId, categoryId: input.categoryId } }),
 
-    update: (id: number, input: RequestInput) =>
-      client.put<RequestResponse>(`/api/requests/${id}`, input, { query: { categoryId: input.categoryId } }),
+    update: (id: number, input: RequestInput, clientId: number) =>
+      client.put<RequestResponse>(`/api/requests/${id}`, input, { query: { clientId, categoryId: input.categoryId } }),
 
     updateStatus: (id: number, status: PublicationStatus) =>
       client.put<RequestResponse>(`/api/requests/${id}/status`, undefined, { query: { status } }),

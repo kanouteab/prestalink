@@ -10,11 +10,12 @@ export function createOfferService(client: ApiClient) {
 
     get: (id: number) => client.get<OfferResponse>(`/api/offers/${id}`, undefined, { auth: false }),
 
-    create: (input: OfferInput) =>
-      client.post<OfferResponse>('/api/offers', input, { query: { categoryId: input.categoryId } }),
+    /** `providerId` est un @RequestParam obligatoire cote backend (pas deduit d'un jeton) : toujours l'id de l'utilisateur courant. */
+    create: (input: OfferInput, providerId: number) =>
+      client.post<OfferResponse>('/api/offers', input, { query: { providerId, categoryId: input.categoryId } }),
 
-    update: (id: number, input: OfferInput) =>
-      client.put<OfferResponse>(`/api/offers/${id}`, input, { query: { categoryId: input.categoryId } }),
+    update: (id: number, input: OfferInput, providerId: number) =>
+      client.put<OfferResponse>(`/api/offers/${id}`, input, { query: { providerId, categoryId: input.categoryId } }),
 
     updateStatus: (id: number, status: PublicationStatus) =>
       client.put<OfferResponse>(`/api/offers/${id}/status`, undefined, { query: { status } }),

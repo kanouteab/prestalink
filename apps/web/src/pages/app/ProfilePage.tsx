@@ -41,10 +41,17 @@ export function ProfilePage() {
   if (!user) return null;
 
   const onSubmit = handleSubmit((values) => {
-    updateProfile.mutate(values, {
-      onSuccess: () => showToast('Profil mis a jour', 'success'),
-      onError: () => showToast('Impossible de mettre a jour le profil', 'error'),
-    });
+    // PUT /api/users/{id} ecrase tout le profil (pas de fusion partielle cote
+    // backend) : on renvoie l'utilisateur complet avec les champs du
+    // formulaire par-dessus, sinon l'email (non-nullable) et les autres
+    // champs non presents dans le formulaire seraient ecrits a null.
+    updateProfile.mutate(
+      { ...user, ...values },
+      {
+        onSuccess: () => showToast('Profil mis a jour', 'success'),
+        onError: () => showToast('Impossible de mettre a jour le profil', 'error'),
+      },
+    );
   });
 
   const onPhotoSelected = (event: React.ChangeEvent<HTMLInputElement>) => {

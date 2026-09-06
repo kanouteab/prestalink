@@ -28,16 +28,19 @@ export function createPublicationService(client: ApiClient, offers: OfferService
 
   return {
     async convertOfferToRequest(offer: OfferResponse, budget: number): Promise<RequestResponse> {
-      const created = await requests.create({
-        title: offer.title,
-        description: offer.description,
-        budget,
-        location: offer.location,
-        locationLabel: offer.locationLabel,
-        latitude: offer.latitude,
-        longitude: offer.longitude,
-        categoryId: offer.category.id,
-      });
+      const created = await requests.create(
+        {
+          title: offer.title,
+          description: offer.description,
+          budget,
+          location: offer.location,
+          locationLabel: offer.locationLabel,
+          latitude: offer.latitude,
+          longitude: offer.longitude,
+          categoryId: offer.category.id,
+        },
+        offer.provider.id,
+      );
 
       if (offer.photoUrls.length > 0) {
         try {
@@ -53,16 +56,19 @@ export function createPublicationService(client: ApiClient, offers: OfferService
     },
 
     async convertRequestToOffer(request: RequestResponse, price: number): Promise<OfferResponse> {
-      const created = await offers.create({
-        title: request.title,
-        description: request.description,
-        price,
-        location: request.location,
-        locationLabel: request.locationLabel,
-        latitude: request.latitude,
-        longitude: request.longitude,
-        categoryId: request.category.id,
-      });
+      const created = await offers.create(
+        {
+          title: request.title,
+          description: request.description,
+          price,
+          location: request.location,
+          locationLabel: request.locationLabel,
+          latitude: request.latitude,
+          longitude: request.longitude,
+          categoryId: request.category.id,
+        },
+        request.client.id,
+      );
 
       if (request.photoUrls.length > 0) {
         try {

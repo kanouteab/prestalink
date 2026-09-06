@@ -1,5 +1,3 @@
-import type { UserResponse } from './user.js';
-
 export interface RegisterRequest {
   fullName: string;
   email: string;
@@ -19,11 +17,6 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string;
   password: string;
-}
-
-export interface LoginResult {
-  user: UserResponse;
-  token: string;
 }
 
 export interface ForgotPasswordRequest {

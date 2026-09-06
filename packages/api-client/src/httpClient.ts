@@ -72,8 +72,12 @@ export class ApiClient {
     if (!formData) headers.set('Content-Type', 'application/json');
 
     if (auth) {
+      // Ce backend n'a pas de systeme de jeton/session : la plupart des endpoints
+      // proteges lisent simplement `X-Current-User-Id` (souvent meme pas verifie
+      // contre quoi que ce soit — voir livrable H). "token" ici est juste l'id
+      // utilisateur courant, pas un secret.
       const token = await this.tokenStore.getToken();
-      if (token) headers.set('Authorization', `Bearer ${token}`);
+      if (token) headers.set('X-Current-User-Id', token);
     }
 
     const controller = new AbortController();

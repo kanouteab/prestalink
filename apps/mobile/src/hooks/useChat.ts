@@ -20,7 +20,7 @@ export function useConversation(context: ChatContext) {
 
   const query = useQuery({
     queryKey,
-    queryFn: () => api.chat.conversation(context.otherUserId, context.publicationType, context.publicationId),
+    queryFn: () => api.chat.conversation(currentUserId!, context.otherUserId, context.publicationType, context.publicationId),
     enabled: Boolean(currentUserId),
   });
 
@@ -62,10 +62,12 @@ export function useConversation(context: ChatContext) {
 
 export function useSendChatMessage() {
   const queryClient = useQueryClient();
+  const senderId = useAuthStore((state) => state.user?.id);
 
   return useMutation({
     mutationFn: (params: { context: ChatContext; content: string }) =>
       api.chat.send({
+        senderId: senderId!,
         receiverId: params.context.otherUserId,
         content: params.content,
         conversationKey: params.context.conversationKey,

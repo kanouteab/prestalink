@@ -25,9 +25,9 @@ export function ChatScreen({ route, navigation }: Props) {
   useEffect(() => {
     navigation.setOptions({ headerShown: true, title: context.otherUserName });
     upsertRecentConversation({ ...context, lastMessageAt: new Date().toISOString() });
-    api.chat.readAllConversation(context.conversationKey).catch(() => {});
+    if (currentUserId) api.chat.readAllConversation(context.conversationKey, currentUserId).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.conversationKey]);
+  }, [context.conversationKey, currentUserId]);
 
   const onSend = () => {
     const content = draft.trim();

@@ -3,15 +3,25 @@ import type { LoginFormValues, RegisterFormValues } from '@prestalink/validation
 import { api } from '../services/apiClient';
 import { useAuthStore } from '../store/authStore';
 
+/**
+ * Ce backend n'a pas de jeton de session : login renvoie l'utilisateur
+ * directement. Le "token" retenu cote client est simplement `String(user.id)`,
+ * envoye ensuite en en-tete X-Current-User-Id (livrable H).
+ */
 export function useLogin() {
   const setSession = useAuthStore((state) => state.setSession);
   return useMutation({
     mutationFn: (values: LoginFormValues) => api.auth.login(values),
-    onSuccess: ({ user, token }) => setSession(user, token),
+    onSuccess: (user) => setSession(user, String(user.id)),
   });
 }
 
-/** Meme orchestration que le Web : register -> login -> PUT role, en attendant que l'inscription accepte le role (livrable H). */
+/**
+ * `POST /api/auth/register` ignore encore le role (livrable H) : on enchaine
+ * inscription -> connexion -> mise a jour du profil. La session est etablie
+ * des la connexion, avant l'appel de mise a jour du role, sinon ce dernier
+ * partirait sans X-Current-User-Id.
+ */
 export function useRegister() {
   const setSession = useAuthStore((state) => state.setSession);
   return useMutation({
@@ -26,18 +36,22 @@ export function useRegister() {
         postalCode: values.postalCode,
         role: values.role,
       });
-      const { user, token } = await api.auth.login({ email: values.email, password: values.password });
-      const withRole = await api.users.update(user.id, { role: values.role });
-      return { user: withRole, token };
+      const user = await api.auth.login({ email: values.email, password: values.password });
+      await setSession(user, String(user.id));
+      // PUT /api/users/{id} ecrase tout le profil (pas de fusion partielle cote
+      // backend) : il faut renvoyer l'utilisateur complet, sinon les champs
+      // omis (dont l'email, non-nullable) sont ecrits a null et la sauvegarde
+      // echoue (livrable H).
+      return api.users.update(user.id, { ...user, role: values.role });
     },
-    onSuccess: ({ user, token }) => setSession(user, token),
+    onSuccess: (withRole) => setSession(withRole, String(withRole.id)),
   });
 }
 
+/** Pas d'endpoint /api/auth/logout sur ce backend : rien a invalider cote serveur, on nettoie juste la session locale. */
 export function useLogout() {
   const clearSession = useAuthStore((state) => state.clearSession);
   return useMutation({
-    mutationFn: () => api.auth.logout(),
-    onSettled: () => clearSession(),
+    mutationFn: async () => clearSession(),
   });
 }

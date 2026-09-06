@@ -19,9 +19,9 @@ export function ChatPanel({ context }: { context: ChatContext }) {
 
   useEffect(() => {
     upsertRecentConversation({ ...context, lastMessageAt: new Date().toISOString() });
-    api.chat.readAllConversation(context.conversationKey).catch(() => {});
+    if (currentUserId) api.chat.readAllConversation(context.conversationKey, currentUserId).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.conversationKey]);
+  }, [context.conversationKey, currentUserId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ block: 'end' });
