@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LinkButton } from '../components';
+import { LinkButton, Logo } from '../components';
 import { useIsAuthenticated } from '../store/authStore';
 import styles from './PublicLayout.module.css';
 
@@ -19,7 +19,7 @@ export function PublicLayout() {
     <div className={styles.shell}>
       <header className={styles.header}>
         <NavLink to="/" className={styles.brand}>
-          PrestaLink
+          <Logo />
         </NavLink>
         <nav className={styles.nav} aria-label="Navigation principale">
           {NAV_ITEMS.map((item) => (

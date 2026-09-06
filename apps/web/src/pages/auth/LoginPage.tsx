@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginSchema, type LoginFormValues } from '@prestalink/validation';
-import { Button, Input } from '../../components';
+import { Button, Input, Logo } from '../../components';
 import { useLogin } from '../../hooks/useAuth';
 import styles from './AuthPages.module.css';
 
@@ -26,6 +26,7 @@ export function LoginPage() {
   return (
     <div className={styles.wrap}>
       <form className={styles.card} onSubmit={onSubmit} noValidate>
+        <Logo markSize={36} showWordmark={false} className={styles.logo} />
         <h1>Connexion</h1>
         <Input label="Adresse e-mail" type="email" autoComplete="email" errorText={errors.email?.message} {...register('email')} />
         <Input label="Mot de passe" type="password" autoComplete="current-password" errorText={errors.password?.message} {...register('password')} />

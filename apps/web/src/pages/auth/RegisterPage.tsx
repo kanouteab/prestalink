@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerSchema, type RegisterFormValues } from '@prestalink/validation';
-import { Button, Input } from '../../components';
+import { Button, Input, Logo } from '../../components';
 import { useRegister } from '../../hooks/useAuth';
 import styles from './AuthPages.module.css';
 
@@ -32,6 +32,7 @@ export function RegisterPage() {
   return (
     <div className={styles.wrap}>
       <form className={styles.card} onSubmit={onSubmit} noValidate>
+        <Logo markSize={36} showWordmark={false} className={styles.logo} />
         <h1>Creer un compte</h1>
 
         <div className={styles.roleRow}>

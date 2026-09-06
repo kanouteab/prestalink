@@ -1,0 +1,115 @@
+.hero {
+  position: relative;
+  background: linear-gradient(160deg, var(--color-brand-tint) 0%, var(--color-surface0) 60%);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: var(--space-xxxl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  align-items: center;
+  gap: var(--space-xxl);
+  padding: var(--space-xxxl) var(--space-xxl);
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: var(--space-xxl) var(--space-lg);
+    gap: var(--space-xl);
+  }
+  .photoWrap {
+    order: -1;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 11px/1 'Public Sans', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-brand);
+  margin-bottom: var(--space-md);
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.12;
+  font-weight: 600;
+  color: var(--color-ink900);
+  text-wrap: balance;
+  margin-bottom: var(--space-md);
+}
+
+.subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-ink500);
+  max-width: 52ch;
+  margin-bottom: var(--space-xl);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xxl);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink700);
+}
+
+.featureIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-success-tint);
+  color: var(--color-success);
+  font-size: 12px;
+  flex: none;
+}
+
+.photoWrap {
+  position: relative;
+}
+
+.photoBlob {
+  position: absolute;
+  inset: -6% -10%;
+  background: linear-gradient(140deg, var(--color-brand) 0%, var(--color-brand-secondary) 100%);
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  opacity: 0.16;
+  z-index: 0;
+}
+
+.photo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 561 / 409;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 45px rgba(18, 20, 42, 0.18);
+  display: block;
+}

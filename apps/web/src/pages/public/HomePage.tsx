@@ -3,6 +3,7 @@ import { usePublicFeed } from '../../hooks/usePublicFeed';
 import { useCategories } from '../../hooks/useCategories';
 import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem, RequestCardItem } from '../../features/publications/PublicationCardItem';
+import { HeroBanner } from '../../features/home/HeroBanner';
 import { Chip, LinkButton } from '../../components';
 import shared from '../shared.module.css';
 
@@ -12,9 +13,11 @@ export function HomePage() {
 
   return (
     <div className={shared.page}>
+      <HeroBanner />
+
       <header className={shared.pageHeader}>
-        <h1>Trouvez le bon prestataire, pres de chez vous</h1>
-        <p>Offres de service et demandes de la communaute, melangees par ordre chronologique.</p>
+        <h2>Offres et demandes recentes</h2>
+        <p>Melangees par ordre chronologique, pres de chez vous en priorite.</p>
       </header>
 
       {categories && categories.length > 0 && (

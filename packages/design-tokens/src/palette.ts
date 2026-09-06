@@ -1,12 +1,17 @@
 /**
- * Palette PrestaLink. Offre (sarcelle) et Demande (violet) sont deliberement
- * eloignees des couleurs semantiques (succes/erreur/avertissement) : ce sont
- * deux natures de publication, pas deux statuts.
+ * Palette PrestaLink. `brand`/`brandEmphasis`/`brandSecondary` reprennent
+ * exactement primaryColor/secondaryColor de branding_settings (table admin,
+ * deja configurable via /api/admin/branding) plutot qu'une couleur inventee,
+ * pour que le produit et le logo existant restent visuellement coherents.
+ * Offre (sarcelle) et Demande (violet) restent deliberement eloignees des
+ * couleurs semantiques (succes/erreur/avertissement) : ce sont deux natures
+ * de publication, pas deux statuts.
  */
 export const lightPalette = {
-  brand: '#2F5FED',
-  brandEmphasis: '#1E45C4',
-  brandTint: '#EAF0FF',
+  brand: '#0D6EFD',
+  brandEmphasis: '#0B5ED7',
+  brandTint: '#E8F1FF',
+  brandSecondary: '#6610F2',
 
   offre: '#0F9D8B',
   offreTint: '#E4F7F3',
@@ -37,9 +42,10 @@ export const lightPalette = {
 } as const;
 
 export const darkPalette = {
-  brand: '#7C97FF',
-  brandEmphasis: '#A9BBFF',
-  brandTint: '#1B2350',
+  brand: '#6EA8FE',
+  brandEmphasis: '#9EC5FE',
+  brandTint: '#122B52',
+  brandSecondary: '#9B6BF3',
 
   offre: '#3FD9C4',
   offreTint: '#0E2A28',

@@ -39,3 +39,6 @@ export type { ConfirmDialogProps } from './Dialog/ConfirmDialog.js';
 
 export { StarRating } from './StarRating/StarRating.js';
 export type { StarRatingProps } from './StarRating/StarRating.js';
+
+export { Logo } from './Logo/Logo.js';
+export type { LogoProps } from './Logo/Logo.js';

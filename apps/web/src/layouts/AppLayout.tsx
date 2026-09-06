@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Button } from '../components';
+import { Button, Logo } from '../components';
 import { useAuthStore } from '../store/authStore';
 import { useLogout } from '../hooks/useAuth';
 import { useRealtimeConnection } from '../hooks/useRealtimeConnection';
@@ -27,7 +27,7 @@ export function AppLayout() {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <NavLink to="/" className={styles.brand}>
-          PrestaLink
+          <Logo />
         </NavLink>
         <nav className={styles.sidebarNav} aria-label="Navigation de l'espace connecte">
           {NAV_ITEMS.map((item) => (

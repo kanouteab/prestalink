@@ -13,6 +13,7 @@ import { createProviderService } from './services/providerService.js';
 import { createHistoryService } from './services/historyService.js';
 import { createDashboardService } from './services/dashboardService.js';
 import { createReportService } from './services/reportService.js';
+import { createContentService } from './services/contentService.js';
 
 /** Point d'entree unique : `const api = createApiServices(client)` cote Web comme Mobile. */
 export function createApiServices(client: ApiClient) {
@@ -34,6 +35,7 @@ export function createApiServices(client: ApiClient) {
     history: createHistoryService(client),
     dashboard: createDashboardService(client),
     reports: createReportService(client),
+    content: createContentService(client),
   };
 }
 
