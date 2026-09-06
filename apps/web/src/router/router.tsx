@@ -1,46 +1,63 @@
+import { lazy, Suspense, type ComponentType } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { AppLayout } from '../layouts/AppLayout';
 import { RequireAuth } from '../routes/RequireAuth';
+import { PageFallback } from './PageFallback';
 
-import { HomePage } from '../pages/public/HomePage';
-import { ExplorePage } from '../pages/public/ExplorePage';
-import { OffersPage } from '../pages/public/OffersPage';
-import { RequestsPage } from '../pages/public/RequestsPage';
-import { PublicationDetailPage } from '../pages/public/PublicationDetailPage';
-import { ContactPage } from '../pages/public/ContactPage';
-import { AboutPage } from '../pages/public/AboutPage';
-import { LoginPage } from '../pages/auth/LoginPage';
-import { RegisterPage } from '../pages/auth/RegisterPage';
+// Chaque page est chargee dans son propre chunk (livrable 25) : le bundle
+// initial ne charge plus l'intégralité de l'app (offres, chat, missions...)
+// avant meme d'afficher l'accueil.
+const HomePage = lazy(() => import('../pages/public/HomePage').then((m) => ({ default: m.HomePage })));
+const ExplorePage = lazy(() => import('../pages/public/ExplorePage').then((m) => ({ default: m.ExplorePage })));
+const OffersPage = lazy(() => import('../pages/public/OffersPage').then((m) => ({ default: m.OffersPage })));
+const RequestsPage = lazy(() => import('../pages/public/RequestsPage').then((m) => ({ default: m.RequestsPage })));
+const PublicationDetailPage = lazy(() =>
+  import('../pages/public/PublicationDetailPage').then((m) => ({ default: m.PublicationDetailPage })),
+);
+const ContactPage = lazy(() => import('../pages/public/ContactPage').then((m) => ({ default: m.ContactPage })));
+const AboutPage = lazy(() => import('../pages/public/AboutPage').then((m) => ({ default: m.AboutPage })));
+const LoginPage = lazy(() => import('../pages/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('../pages/auth/RegisterPage').then((m) => ({ default: m.RegisterPage })));
 
-import { AppHomePage } from '../pages/app/AppHomePage';
-import { PublishPage } from '../pages/app/PublishPage';
-import { MyPublicationsPage } from '../pages/app/MyPublicationsPage';
-import { EditOfferPage } from '../pages/app/EditOfferPage';
-import { EditRequestPage } from '../pages/app/EditRequestPage';
-import { FavoritesPage } from '../pages/app/FavoritesPage';
-import { MessagesPage } from '../pages/app/MessagesPage';
-import { ChatPage } from '../pages/app/ChatPage';
-import { NotificationsPage } from '../pages/app/NotificationsPage';
-import { MissionsPage } from '../pages/app/MissionsPage';
-import { ProfilePage } from '../pages/app/ProfilePage';
+const AppHomePage = lazy(() => import('../pages/app/AppHomePage').then((m) => ({ default: m.AppHomePage })));
+const PublishPage = lazy(() => import('../pages/app/PublishPage').then((m) => ({ default: m.PublishPage })));
+const MyPublicationsPage = lazy(() => import('../pages/app/MyPublicationsPage').then((m) => ({ default: m.MyPublicationsPage })));
+const EditOfferPage = lazy(() => import('../pages/app/EditOfferPage').then((m) => ({ default: m.EditOfferPage })));
+const EditRequestPage = lazy(() => import('../pages/app/EditRequestPage').then((m) => ({ default: m.EditRequestPage })));
+const FavoritesPage = lazy(() => import('../pages/app/FavoritesPage').then((m) => ({ default: m.FavoritesPage })));
+const MessagesPage = lazy(() => import('../pages/app/MessagesPage').then((m) => ({ default: m.MessagesPage })));
+const ChatPage = lazy(() => import('../pages/app/ChatPage').then((m) => ({ default: m.ChatPage })));
+const NotificationsPage = lazy(() => import('../pages/app/NotificationsPage').then((m) => ({ default: m.NotificationsPage })));
+const MissionsPage = lazy(() => import('../pages/app/MissionsPage').then((m) => ({ default: m.MissionsPage })));
+const ProfilePage = lazy(() => import('../pages/app/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 
-import { DesignSystemShowcasePage } from '../pages/DesignSystemShowcasePage';
-import { NotFoundPage } from '../pages/NotFoundPage';
+const DesignSystemShowcasePage = lazy(() =>
+  import('../pages/DesignSystemShowcasePage').then((m) => ({ default: m.DesignSystemShowcasePage })),
+);
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
+
+function page(Component: ComponentType) {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <Component />
+    </Suspense>
+  );
+}
 
 export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
     children: [
-      { path: '/', element: <HomePage /> },
-      { path: '/explorer', element: <ExplorePage /> },
-      { path: '/offres', element: <OffersPage /> },
-      { path: '/demandes', element: <RequestsPage /> },
-      { path: '/publication/:type/:id', element: <PublicationDetailPage /> },
-      { path: '/contact', element: <ContactPage /> },
-      { path: '/a-propos', element: <AboutPage /> },
-      { path: '/connexion', element: <LoginPage /> },
-      { path: '/inscription', element: <RegisterPage /> },
+      { path: '/', element: page(HomePage) },
+      { path: '/explorer', element: page(ExplorePage) },
+      { path: '/offres', element: page(OffersPage) },
+      { path: '/demandes', element: page(RequestsPage) },
+      { path: '/publication/:type/:id', element: page(PublicationDetailPage) },
+      { path: '/contact', element: page(ContactPage) },
+      { path: '/a-propos', element: page(AboutPage) },
+      { path: '/connexion', element: page(LoginPage) },
+      { path: '/inscription', element: page(RegisterPage) },
     ],
   },
   {
@@ -49,22 +66,22 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/app', element: <AppHomePage /> },
-          { path: '/app/explorer', element: <ExplorePage /> },
-          { path: '/app/publier', element: <PublishPage /> },
-          { path: '/app/publications', element: <MyPublicationsPage /> },
-          { path: '/app/publications/offres/:id/modifier', element: <EditOfferPage /> },
-          { path: '/app/publications/demandes/:id/modifier', element: <EditRequestPage /> },
-          { path: '/app/favoris', element: <FavoritesPage /> },
-          { path: '/app/messages', element: <MessagesPage /> },
-          { path: '/app/messages/chat', element: <ChatPage /> },
-          { path: '/app/notifications', element: <NotificationsPage /> },
-          { path: '/app/missions', element: <MissionsPage /> },
-          { path: '/app/profil', element: <ProfilePage /> },
+          { path: '/app', element: page(AppHomePage) },
+          { path: '/app/explorer', element: page(ExplorePage) },
+          { path: '/app/publier', element: page(PublishPage) },
+          { path: '/app/publications', element: page(MyPublicationsPage) },
+          { path: '/app/publications/offres/:id/modifier', element: page(EditOfferPage) },
+          { path: '/app/publications/demandes/:id/modifier', element: page(EditRequestPage) },
+          { path: '/app/favoris', element: page(FavoritesPage) },
+          { path: '/app/messages', element: page(MessagesPage) },
+          { path: '/app/messages/chat', element: page(ChatPage) },
+          { path: '/app/notifications', element: page(NotificationsPage) },
+          { path: '/app/missions', element: page(MissionsPage) },
+          { path: '/app/profil', element: page(ProfilePage) },
         ],
       },
     ],
   },
-  { path: '/design-system', element: <DesignSystemShowcasePage /> },
-  { path: '*', element: <NotFoundPage /> },
+  { path: '/design-system', element: page(DesignSystemShowcasePage) },
+  { path: '*', element: page(NotFoundPage) },
 ]);
