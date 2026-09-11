@@ -4,18 +4,19 @@ import { useAuthStore } from '../../store/authStore';
 import { api } from '../../services/apiClient';
 import { upsertRecentConversation } from '../../services/recentConversations';
 import { Button, useToast } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import type { ChatContext } from './types';
 import styles from './ChatPanel.module.css';
-
-const timeFormatter = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
 export function ChatPanel({ context }: { context: ChatContext }) {
   const currentUserId = useAuthStore((state) => state.user?.id);
   const { data: messages, isLoading } = useConversation(context);
   const sendMessage = useSendChatMessage();
   const { showToast } = useToast();
+  const { t, locale } = useTranslation();
   const [draft, setDraft] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const timeFormatter = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
 
   useEffect(() => {
     upsertRecentConversation({ ...context, lastMessageAt: new Date().toISOString() });
@@ -34,7 +35,7 @@ export function ChatPanel({ context }: { context: ChatContext }) {
     setDraft('');
     sendMessage.mutate(
       { context, content },
-      { onError: () => showToast("Impossible d'envoyer le message", 'error') },
+      { onError: () => showToast(t('chat.sendError'), 'error') },
     );
   };
 
@@ -43,12 +44,12 @@ export function ChatPanel({ context }: { context: ChatContext }) {
       <div className={styles.header}>
         <div>
           <div className={styles.headerName}>{context.otherUserName}</div>
-          <div className={styles.headerContext}>a propos de : {context.publicationTitle}</div>
+          <div className={styles.headerContext}>{t('chat.about', { title: context.publicationTitle })}</div>
         </div>
       </div>
 
       <div className={styles.messages}>
-        {isLoading && <p>Chargement de la conversation...</p>}
+        {isLoading && <p>{t('chat.loadingConversation')}</p>}
         {messages?.map((message) => {
           const mine = message.senderId === currentUserId;
           return (
@@ -66,7 +67,7 @@ export function ChatPanel({ context }: { context: ChatContext }) {
       <form className={styles.composer} onSubmit={onSubmit}>
         <textarea
           rows={1}
-          placeholder="Ecrire un message..."
+          placeholder={t('chat.placeholder')}
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={(event) => {
@@ -77,7 +78,7 @@ export function ChatPanel({ context }: { context: ChatContext }) {
           }}
         />
         <Button type="submit" variant="primary" loading={sendMessage.isPending} disabled={!draft.trim()}>
-          Envoyer
+          {t('chat.send')}
         </Button>
       </form>
     </div>

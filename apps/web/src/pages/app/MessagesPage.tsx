@@ -3,25 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { readRecentConversations, type RecentConversation } from '../../services/recentConversations';
 import { EmptyState } from '../../components';
 import { formatRelativeDate } from '../../utils/format';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './MessagesPage.module.css';
 
 export function MessagesPage() {
   const [conversations] = useState<RecentConversation[]>(() => readRecentConversations());
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className={shared.page} style={{ padding: 0 }}>
       <header className={shared.pageHeader}>
-        <h1>Messages</h1>
-        <p>Conversations recentes ouvertes depuis une offre ou une demande.</p>
+        <h1>{t('messages.title')}</h1>
+        <p>{t('messages.subtitle')}</p>
       </header>
 
       {conversations.length === 0 ? (
-        <EmptyState
-          title="Aucune conversation"
-          message="Contactez un prestataire ou un client depuis le detail d'une publication pour demarrer une conversation."
-        />
+        <EmptyState title={t('messages.emptyTitle')} message={t('messages.emptyMessage')} />
       ) : (
         <div className={styles.list}>
           {conversations.map((conversation) => (

@@ -7,18 +7,11 @@ import { buildDirectConversationKey } from '../../utils/chatKey';
 import { Button, Chip, ConfirmDialog, EmptyState, MissionStatusBadge, useToast } from '../../components';
 import { ReviewDialog } from '../../features/missions/ReviewDialog';
 import { formatRelativeDate } from '../../utils/format';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './MissionsPage.module.css';
 
 type Filter = 'ALL' | MissionStatus;
-
-const FILTERS: { value: Filter; label: string }[] = [
-  { value: 'ALL', label: 'Toutes' },
-  { value: 'EN_ATTENTE', label: 'En attente' },
-  { value: 'EN_COURS', label: 'En cours' },
-  { value: 'TERMINEE', label: 'Terminees' },
-  { value: 'ANNULEE', label: 'Annulees' },
-];
 
 export function MissionsPage() {
   useMissionsRealtime();
@@ -29,6 +22,15 @@ export function MissionsPage() {
   const submitReview = useSubmitReview();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const FILTERS: { value: Filter; label: string }[] = [
+    { value: 'ALL', label: t('missions.filterAll') },
+    { value: 'EN_ATTENTE', label: t('missions.filterPending') },
+    { value: 'EN_COURS', label: t('missions.filterInProgress') },
+    { value: 'TERMINEE', label: t('missions.filterCompleted') },
+    { value: 'ANNULEE', label: t('missions.filterCancelled') },
+  ];
 
   const [filter, setFilter] = useState<Filter>('ALL');
   const [pendingCancel, setPendingCancel] = useState<MissionResponse | null>(null);
@@ -54,8 +56,8 @@ export function MissionsPage() {
   return (
     <div className={shared.page} style={{ padding: 0 }}>
       <header className={shared.pageHeader}>
-        <h1>Missions</h1>
-        <p>Suivi des missions en tant que client ou prestataire.</p>
+        <h1>{t('missions.title')}</h1>
+        <p>{t('missions.subtitle')}</p>
       </header>
 
       <div className={styles.tabs}>
@@ -67,9 +69,9 @@ export function MissionsPage() {
       </div>
 
       {isLoading ? (
-        <p>Chargement...</p>
+        <p>{t('common.loading')}</p>
       ) : !filtered || filtered.length === 0 ? (
-        <EmptyState title="Aucune mission" message="Les missions apparaissent ici des qu'un prestataire accepte une demande." />
+        <EmptyState title={t('missions.emptyTitle')} message={t('missions.emptyMessage')} />
       ) : (
         <div className={styles.list}>
           {filtered.map((mission) => {
@@ -83,33 +85,33 @@ export function MissionsPage() {
                 <div className={styles.info}>
                   <div className={styles.title}>{mission.request.title}</div>
                   <div className={styles.meta}>
-                    <span>{isClient ? 'Prestataire' : 'Client'} : {otherParty.fullName}</span>
-                    {mission.startedAt && <span>Debut {formatRelativeDate(mission.startedAt)}</span>}
+                    <span>{isClient ? t('missions.roleProvider') : t('missions.roleClient')} : {otherParty.fullName}</span>
+                    {mission.startedAt && <span>{t('missions.startedAt', { date: formatRelativeDate(mission.startedAt) })}</span>}
                     <MissionStatusBadge status={mission.status} />
                   </div>
                 </div>
                 <div className={styles.actions}>
                   <Link to={`/publication/REQUEST/${mission.request.id}`}>
                     <Button variant="ghost" size="sm">
-                      Demande
+                      {t('missions.requestLink')}
                     </Button>
                   </Link>
                   <Button variant="secondary" size="sm" onClick={() => onDiscuss(mission)}>
-                    Discuter
+                    {t('missions.discuss')}
                   </Button>
                   {canAct && (
-                    <Button variant="outline" size="sm" onClick={() => finishMission.mutate(mission.id, { onError: () => showToast('Impossible de terminer la mission', 'error') })}>
-                      Terminer
+                    <Button variant="outline" size="sm" onClick={() => finishMission.mutate(mission.id, { onError: () => showToast(t('missions.finishError'), 'error') })}>
+                      {t('missions.finish')}
                     </Button>
                   )}
                   {canAct && (
                     <Button variant="danger" size="sm" onClick={() => setPendingCancel(mission)}>
-                      Annuler
+                      {t('missions.cancel')}
                     </Button>
                   )}
                   {canReview && (
                     <Button variant="primary" size="sm" onClick={() => setPendingReview(mission)}>
-                      Noter
+                      {t('missions.rate')}
                     </Button>
                   )}
                 </div>
@@ -121,15 +123,15 @@ export function MissionsPage() {
 
       <ConfirmDialog
         open={pendingCancel !== null}
-        title="Annuler cette mission ?"
-        message={`La mission "${pendingCancel?.request.title}" sera annulee pour les deux parties.`}
+        title={t('missions.cancelDialogTitle')}
+        message={t('missions.cancelDialogMessage', { title: pendingCancel?.request.title ?? '' })}
         pending={cancelMission.isPending}
         onCancel={() => setPendingCancel(null)}
         onConfirm={() => {
           if (!pendingCancel) return;
           cancelMission.mutate(pendingCancel.id, {
-            onSuccess: () => showToast('Mission annulee', 'success'),
-            onError: () => showToast("Impossible d'annuler cette mission", 'error'),
+            onSuccess: () => showToast(t('missions.cancelSuccess'), 'success'),
+            onError: () => showToast(t('missions.cancelError'), 'error'),
             onSettled: () => setPendingCancel(null),
           });
         }}
@@ -146,10 +148,10 @@ export function MissionsPage() {
             { providerId: pendingReview.provider.id, missionId: pendingReview.id, rating, comment },
             {
               onSuccess: () => {
-                showToast('Merci pour votre avis', 'success');
+                showToast(t('missions.reviewThanks'), 'success');
                 setPendingReview(null);
               },
-              onError: () => showToast("Impossible d'enregistrer l'avis (peut-etre deja note)", 'error'),
+              onError: () => showToast(t('missions.reviewError'), 'error'),
             },
           );
         }}

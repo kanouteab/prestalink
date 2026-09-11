@@ -8,6 +8,7 @@ import { useAuthStore, useIsAuthenticated } from '../../store/authStore';
 import { buildDirectConversationKey } from '../../utils/chatKey';
 import { Badge, Button, Chip, FavoriteButton, PublicationStatusBadge, PublicationTypeBadge, useToast } from '../../components';
 import { formatCurrency, formatRelativeDate, initials } from '../../utils/format';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './PublicationDetailPage.module.css';
 
@@ -57,20 +58,27 @@ function useContactAction(
 function OfferDetail({ id }: { id: number | undefined }) {
   const { data: offer, isLoading } = useOffer(id);
   const favoriteState = useFavoriteToggle('OFFER', id ?? 0);
+  const { t } = useTranslation();
 
-  if (isLoading || !offer) return <div className={shared.page}>Chargement...</div>;
+  if (isLoading || !offer) return <div className={shared.page}>{t('common.loading')}</div>;
 
   return <OfferDetailView offer={offer} favoriteState={favoriteState} />;
 }
 
 function OfferDetailView({ offer, favoriteState }: { offer: NonNullable<ReturnType<typeof useOffer>['data']>; favoriteState: ReturnType<typeof useFavoriteToggle> }) {
   const { onContact, isOwnPublication } = useContactAction(offer.provider.id, offer.provider.fullName, 'OFFER', offer.id, offer.title);
+  const { t } = useTranslation();
 
   return (
     <div className={shared.page}>
       <div className={styles.hero}>
         <PublicationTypeBadge type="OFFER" />
-        <FavoriteButton active={favoriteState.favorite} pending={favoriteState.pending} onToggle={favoriteState.onToggle} label={`Favori : ${offer.title}`} />
+        <FavoriteButton
+          active={favoriteState.favorite}
+          pending={favoriteState.pending}
+          onToggle={favoriteState.onToggle}
+          label={t('common.favoriteLabel', { title: offer.title })}
+        />
       </div>
       <div className={styles.layout}>
         <div>
@@ -94,7 +102,7 @@ function OfferDetailView({ offer, favoriteState }: { offer: NonNullable<ReturnTy
           </div>
           {!isOwnPublication && (
             <Button variant="primary" onClick={onContact}>
-              Contacter
+              {t('publicationDetail.contact')}
             </Button>
           )}
         </aside>
@@ -106,8 +114,9 @@ function OfferDetailView({ offer, favoriteState }: { offer: NonNullable<ReturnTy
 function RequestDetail({ id }: { id: number | undefined }) {
   const { data: request, isLoading } = useRequest(id);
   const favoriteState = useFavoriteToggle('REQUEST', id ?? 0);
+  const { t } = useTranslation();
 
-  if (isLoading || !request) return <div className={shared.page}>Chargement...</div>;
+  if (isLoading || !request) return <div className={shared.page}>{t('common.loading')}</div>;
 
   return <RequestDetailView request={request} favoriteState={favoriteState} />;
 }
@@ -118,6 +127,7 @@ function RequestDetailView({ request, favoriteState }: { request: NonNullable<Re
   const navigate = useNavigate();
   const { showToast } = useToast();
   const acceptRequest = useAcceptRequest();
+  const { t } = useTranslation();
 
   const canAccept = currentUser?.role === 'PRESTATAIRE' && !isOwnPublication && request.status === 'AVAILABLE';
 
@@ -127,10 +137,10 @@ function RequestDetailView({ request, favoriteState }: { request: NonNullable<Re
       { clientId: request.client.id, providerId: currentUser.id, requestId: request.id },
       {
         onSuccess: () => {
-          showToast('Demande acceptee : mission creee', 'success');
+          showToast(t('publicationDetail.acceptSuccess'), 'success');
           navigate('/app/missions');
         },
-        onError: () => showToast("Impossible d'accepter cette demande", 'error'),
+        onError: () => showToast(t('publicationDetail.acceptError'), 'error'),
       },
     );
   };
@@ -139,7 +149,12 @@ function RequestDetailView({ request, favoriteState }: { request: NonNullable<Re
     <div className={shared.page}>
       <div className={[styles.hero, styles.heroRequest].join(' ')}>
         <PublicationTypeBadge type="REQUEST" />
-        <FavoriteButton active={favoriteState.favorite} pending={favoriteState.pending} onToggle={favoriteState.onToggle} label={`Favori : ${request.title}`} />
+        <FavoriteButton
+          active={favoriteState.favorite}
+          pending={favoriteState.pending}
+          onToggle={favoriteState.onToggle}
+          label={t('common.favoriteLabel', { title: request.title })}
+        />
       </div>
       <div className={styles.layout}>
         <div>
@@ -153,19 +168,19 @@ function RequestDetailView({ request, favoriteState }: { request: NonNullable<Re
           <p className={styles.description}>{request.description}</p>
         </div>
         <aside className={styles.sidebar}>
-          <div className={styles.amount}>Budget : {formatCurrency(request.budget)}</div>
+          <div className={styles.amount}>{t('publicationDetail.budgetPrefix')} : {formatCurrency(request.budget)}</div>
           <div className={styles.author}>
             <span className={styles.authorAvatar}>{initials(request.client.fullName)}</span>
             <div style={{ fontWeight: 700 }}>{request.client.fullName}</div>
           </div>
           {canAccept && (
             <Button variant="primary" onClick={onAccept} loading={acceptRequest.isPending}>
-              Accepter cette demande
+              {t('publicationDetail.accept')}
             </Button>
           )}
           {!isOwnPublication && (
             <Button variant={canAccept ? 'secondary' : 'primary'} onClick={onContact}>
-              Contacter
+              {t('publicationDetail.contact')}
             </Button>
           )}
         </aside>

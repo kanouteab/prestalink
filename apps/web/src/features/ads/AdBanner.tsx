@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlayIcon } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import styles from './AdBanner.module.css';
 
 export interface AdSlot {
@@ -10,14 +11,6 @@ export interface AdSlot {
   thumbnailUrl?: string;
 }
 
-const DEFAULT_SLOTS: AdSlot[] = [
-  {
-    id: 'placeholder',
-    title: 'Trouvez le bon prestataire, en vidéo',
-    subtitle: 'Présentations vidéo de nos meilleurs prestataires près de chez vous',
-  },
-];
-
 export interface AdBannerProps {
   slots?: AdSlot[];
 }
@@ -27,10 +20,14 @@ export interface AdBannerProps {
  * carrousel (points de pagination si `slots` en contient plusieurs). Sans
  * `videoUrl`, le spot reste un simple visuel cliquable (aucune video a lire).
  */
-export function AdBanner({ slots = DEFAULT_SLOTS }: AdBannerProps) {
+export function AdBanner({ slots }: AdBannerProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const active = slots[activeIndex];
+  const { t } = useTranslation();
+  const effectiveSlots = slots ?? [
+    { id: 'placeholder', title: t('adBanner.fallbackTitle'), subtitle: t('adBanner.fallbackSubtitle') },
+  ];
+  const active = effectiveSlots[activeIndex];
 
   if (!active) return null;
 
@@ -44,7 +41,7 @@ export function AdBanner({ slots = DEFAULT_SLOTS }: AdBannerProps) {
       className={styles.banner}
       style={!playing && active.thumbnailUrl ? { backgroundImage: `url(${active.thumbnailUrl})` } : undefined}
     >
-      <span className={styles.tag}>Publicité</span>
+      <span className={styles.tag}>{t('adBanner.tag')}</span>
 
       {playing && active.videoUrl ? (
         <video className={styles.video} src={active.videoUrl} controls autoPlay onEnded={() => setPlaying(false)} />
@@ -54,7 +51,7 @@ export function AdBanner({ slots = DEFAULT_SLOTS }: AdBannerProps) {
             type="button"
             className={styles.playButton}
             onClick={() => active.videoUrl && setPlaying(true)}
-            aria-label={`Lire la vidéo : ${active.title}`}
+            aria-label={t('adBanner.playAriaLabel', { title: active.title })}
           >
             <PlayIcon size={22} />
           </button>
@@ -65,14 +62,14 @@ export function AdBanner({ slots = DEFAULT_SLOTS }: AdBannerProps) {
         </>
       )}
 
-      {slots.length > 1 && (
+      {effectiveSlots.length > 1 && (
         <div className={styles.dots}>
-          {slots.map((slot, index) => (
+          {effectiveSlots.map((slot, index) => (
             <button
               key={slot.id}
               type="button"
               className={[styles.dot, index === activeIndex && styles.dotActive].filter(Boolean).join(' ')}
-              aria-label={`Annonce ${index + 1}`}
+              aria-label={t('adBanner.slotAriaLabel', { index: index + 1 })}
               onClick={() => selectSlot(index)}
             />
           ))}

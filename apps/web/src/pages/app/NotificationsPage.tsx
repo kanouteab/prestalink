@@ -8,6 +8,7 @@ import {
 import { notificationIcon } from '../../features/notifications/notificationDisplay';
 import { Button, EmptyState } from '../../components';
 import { formatRelativeDate } from '../../utils/format';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './NotificationsPage.module.css';
 
@@ -17,26 +18,33 @@ export function NotificationsPage() {
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
   const remove = useDeleteNotification();
+  const { t } = useTranslation();
 
   return (
     <div className={shared.page} style={{ padding: 0 }}>
       <header className={shared.pageHeader}>
-        <h1>Notifications</h1>
-        <p>{isUnreadLoading ? 'Chargement...' : unread?.count ? `${unread.count} notification(s) non lue(s).` : 'Vous etes a jour.'}</p>
+        <h1>{t('notifications.title')}</h1>
+        <p>
+          {isUnreadLoading
+            ? t('common.loading')
+            : unread?.count
+              ? t('notifications.unreadCount', { count: unread.count })
+              : t('notifications.allCaughtUp')}
+        </p>
       </header>
 
       {Boolean(unread?.count) && (
         <div className={shared.toolbar}>
           <Button variant="secondary" size="sm" onClick={() => markAllRead.mutate()} loading={markAllRead.isPending}>
-            Tout marquer comme lu
+            {t('notifications.markAllRead')}
           </Button>
         </div>
       )}
 
       {isLoading ? (
-        <p>Chargement...</p>
+        <p>{t('common.loading')}</p>
       ) : !notifications || notifications.length === 0 ? (
-        <EmptyState title="Aucune notification" message="Vous serez notifie ici des nouveaux messages et de l'activite sur vos publications." />
+        <EmptyState title={t('notifications.emptyTitle')} message={t('notifications.emptyMessage')} />
       ) : (
         <div className={styles.list}>
           {notifications.map((notification) => (
@@ -50,11 +58,11 @@ export function NotificationsPage() {
               <div className={styles.actions}>
                 {!notification.isRead && (
                   <Button variant="ghost" size="sm" onClick={() => markRead.mutate(notification.id)}>
-                    Marquer lu
+                    {t('notifications.markRead')}
                   </Button>
                 )}
                 <Button variant="ghost" size="sm" onClick={() => remove.mutate(notification.id)}>
-                  Supprimer
+                  {t('notifications.delete')}
                 </Button>
               </div>
             </div>

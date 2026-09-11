@@ -4,6 +4,7 @@ import { useCategories } from '../../hooks/useCategories';
 import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem, RequestCardItem } from '../../features/publications/PublicationCardItem';
 import { Chip, Input } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './ExplorePage.module.css';
 
@@ -12,6 +13,7 @@ type TypeFilter = 'ALL' | 'OFFER' | 'REQUEST';
 export function ExplorePage() {
   const { items, isLoading } = usePublicFeed();
   const { data: categories } = useCategories();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('ALL');
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -30,33 +32,33 @@ export function ExplorePage() {
   return (
     <div className={shared.page}>
       <header className={shared.pageHeader}>
-        <h1>Explorer</h1>
-        <p>Recherchez par mot-cle, filtrez par type ou par categorie.</p>
+        <h1>{t('explore.title')}</h1>
+        <p>{t('explore.subtitle')}</p>
       </header>
 
       <div className={shared.toolbar}>
         <Input
-          label="Rechercher"
-          placeholder="Ex : plomberie, menage, cours..."
+          label={t('explore.searchLabel')}
+          placeholder={t('explore.searchPlaceholder')}
           className={styles.search}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
         <Chip as="button" selected={typeFilter === 'ALL'} onClick={() => setTypeFilter('ALL')}>
-          Tout
+          {t('explore.filterAll')}
         </Chip>
         <Chip as="button" selected={typeFilter === 'OFFER'} onClick={() => setTypeFilter('OFFER')}>
-          Offres
+          {t('explore.filterOffers')}
         </Chip>
         <Chip as="button" selected={typeFilter === 'REQUEST'} onClick={() => setTypeFilter('REQUEST')}>
-          Demandes
+          {t('explore.filterRequests')}
         </Chip>
       </div>
 
       {categories && categories.length > 0 && (
         <div className={shared.chipsRow}>
           <Chip as="button" selected={categoryId === null} onClick={() => setCategoryId(null)}>
-            Toutes categories
+            {t('explore.allCategories')}
           </Chip>
           {categories.map((category) => (
             <Chip as="button" key={category.id} selected={categoryId === category.id} onClick={() => setCategoryId(category.id)}>
@@ -71,8 +73,8 @@ export function ExplorePage() {
         isLoading={isLoading}
         keyExtractor={(item) => `${item.type}-${item.data.id}`}
         renderItem={(item) => (item.type === 'OFFER' ? <OfferCardItem offer={item.data} /> : <RequestCardItem request={item.data} />)}
-        emptyTitle="Aucun resultat"
-        emptyMessage="Essayez d'elargir votre recherche ou vos filtres."
+        emptyTitle={t('explore.emptyTitle')}
+        emptyMessage={t('explore.emptyMessage')}
       />
     </div>
   );

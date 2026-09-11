@@ -5,19 +5,21 @@ import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem, RequestCardItem } from '../../features/publications/PublicationCardItem';
 import { HeroBanner } from '../../features/home/HeroBanner';
 import { Chip, LinkButton } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 
 export function HomePage() {
   const { items, isLoading } = usePublicFeed();
   const { data: categories } = useCategories();
+  const { t } = useTranslation();
 
   return (
     <div className={shared.page}>
       <HeroBanner />
 
       <header className={shared.pageHeader}>
-        <h2>Offres et demandes recentes</h2>
-        <p>Melangees par ordre chronologique, pres de chez vous en priorite.</p>
+        <h2>{t('home.sectionTitle')}</h2>
+        <p>{t('home.sectionSubtitle')}</p>
       </header>
 
       {categories && categories.length > 0 && (
@@ -32,7 +34,7 @@ export function HomePage() {
 
       <div className={shared.toolbar}>
         <LinkButton to="/explorer" variant="outline" size="sm">
-          Voir tout dans Explorer
+          {t('home.exploreCta')}
         </LinkButton>
       </div>
 
@@ -41,11 +43,11 @@ export function HomePage() {
         isLoading={isLoading}
         keyExtractor={(item) => `${item.type}-${item.data.id}`}
         renderItem={(item) => (item.type === 'OFFER' ? <OfferCardItem offer={item.data} /> : <RequestCardItem request={item.data} />)}
-        emptyTitle="Aucune publication pour le moment"
-        emptyMessage="Revenez bientot, ou soyez le premier a publier une offre ou une demande."
+        emptyTitle={t('home.emptyTitle')}
+        emptyMessage={t('home.emptyMessage')}
         emptyAction={
           <Link to="/inscription" style={{ fontWeight: 700 }}>
-            Creer un compte pour publier
+            {t('home.emptyAction')}
           </Link>
         }
       />

@@ -8,6 +8,7 @@ import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem, RequestCardItem } from '../../features/publications/PublicationCardItem';
 import { AdBanner } from '../../features/ads/AdBanner';
 import { LinkButton } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 
 export function AppHomePage() {
@@ -16,15 +17,16 @@ export function AppHomePage() {
   const { data: myOffers } = useMyOffers();
   const { data: myRequests } = useMyRequests();
   const { data: favorites } = useFavorites();
+  const { t } = useTranslation();
 
   const recentItems = items?.slice(0, 6);
 
   return (
     <div>
       <header className={shared.pageHeader}>
-        <h1>Bonjour {user?.fullName?.split(' ')[0] ?? ''} 👋</h1>
+        <h1>{t('appHome.greeting', { name: user?.fullName?.split(' ')[0] ?? '' })}</h1>
         <p>
-          {myOffers?.length ?? 0} offre(s) publiee(s), {myRequests?.length ?? 0} demande(s) publiee(s), {favorites?.length ?? 0} favori(s).
+          {t('appHome.stats', { offers: myOffers?.length ?? 0, requests: myRequests?.length ?? 0, favorites: favorites?.length ?? 0 })}
         </p>
       </header>
 
@@ -32,28 +34,28 @@ export function AppHomePage() {
 
       <div className={shared.toolbar}>
         <LinkButton to="/app/publier" variant="primary" size="sm">
-          Publier
+          {t('appHome.publish')}
         </LinkButton>
         <LinkButton to="/app/publications" variant="secondary" size="sm">
-          Mes publications
+          {t('appHome.myPublications')}
         </LinkButton>
         <LinkButton to="/app/favoris" variant="secondary" size="sm">
-          Favoris
+          {t('appHome.favorites')}
         </LinkButton>
       </div>
 
       <div className={shared.section}>
         <div className={shared.sectionHead}>
-          <h2>Activite recente sur la marketplace</h2>
-          <Link to="/app/explorer">Voir tout</Link>
+          <h2>{t('appHome.recentActivity')}</h2>
+          <Link to="/app/explorer">{t('common.seeAll')}</Link>
         </div>
         <PublicationGrid
           items={recentItems}
           isLoading={isLoading}
           keyExtractor={(item) => `${item.type}-${item.data.id}`}
           renderItem={(item) => (item.type === 'OFFER' ? <OfferCardItem offer={item.data} /> : <RequestCardItem request={item.data} />)}
-          emptyTitle="Rien pour le moment"
-          emptyMessage="Soyez le premier a publier une offre ou une demande."
+          emptyTitle={t('appHome.emptyTitle')}
+          emptyMessage={t('appHome.emptyMessage')}
           skeletonCount={3}
         />
       </div>

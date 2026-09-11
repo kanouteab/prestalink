@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import { publicationStatusColor, missionStatusColor, type StatusColorRole } from '@prestalink/design-tokens';
+import { useTranslation } from '../../i18n/useTranslation.js';
 import styles from './Badge.module.css';
 
 export type BadgeTone = StatusColorRole | 'offre' | 'demande';
@@ -12,28 +13,26 @@ export function Badge({ tone, className, ...rest }: BadgeProps) {
   return <span className={[styles.badge, styles[tone], className].filter(Boolean).join(' ')} {...rest} />;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  AVAILABLE: 'Disponible',
-  IN_PROGRESS: 'En cours',
-  COMPLETED: 'Terminee',
-  SUSPENDED: 'Suspendue',
-  EXPIRED: 'Expiree',
-  EN_ATTENTE: 'En attente',
-  EN_COURS: 'En cours',
-  TERMINEE: 'Terminee',
-  ANNULEE: 'Annulee',
-};
+/** Repli sur le statut brut si le backend renvoie une valeur hors de la liste connue. */
+function statusLabel(t: (key: string) => string, status: string): string {
+  const key = `status.${status}`;
+  const label = t(key);
+  return label === key ? status : label;
+}
 
 export function PublicationStatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation();
   const tone = publicationStatusColor[status] ?? 'neutral';
-  return <Badge tone={tone}>{STATUS_LABELS[status] ?? status}</Badge>;
+  return <Badge tone={tone}>{statusLabel(t, status)}</Badge>;
 }
 
 export function MissionStatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation();
   const tone = missionStatusColor[status] ?? 'neutral';
-  return <Badge tone={tone}>{STATUS_LABELS[status] ?? status}</Badge>;
+  return <Badge tone={tone}>{statusLabel(t, status)}</Badge>;
 }
 
 export function PublicationTypeBadge({ type }: { type: 'OFFER' | 'REQUEST' }) {
-  return <Badge tone={type === 'OFFER' ? 'offre' : 'demande'}>{type === 'OFFER' ? 'Offre' : 'Demande'}</Badge>;
+  const { t } = useTranslation();
+  return <Badge tone={type === 'OFFER' ? 'offre' : 'demande'}>{t(`publicationType.${type}`)}</Badge>;
 }

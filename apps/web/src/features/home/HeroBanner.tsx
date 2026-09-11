@@ -2,6 +2,7 @@ import heroPhoto from '../../assets/hero-provider.jpg';
 import { useHomeBanner } from '../../hooks/useHomeBanner';
 import { useIsAuthenticated } from '../../store/authStore';
 import { LinkButton } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import styles from './HeroBanner.module.css';
 
 /**
@@ -14,6 +15,7 @@ import styles from './HeroBanner.module.css';
 export function HeroBanner() {
   const { data: banner } = useHomeBanner();
   const isAuthenticated = useIsAuthenticated();
+  const { t } = useTranslation();
 
   if (!banner) return null;
 
@@ -24,7 +26,7 @@ export function HeroBanner() {
     <section className={styles.hero}>
       <div className={styles.grid}>
         <div>
-          <span className={styles.kicker}>Marketplace de services locale</span>
+          <span className={styles.kicker}>{t('hero.kicker')}</span>
           <h1 className={styles.title}>{banner.title}</h1>
           <p className={styles.subtitle}>{banner.subtitle}</p>
           {features.length > 0 && (
@@ -50,7 +52,7 @@ export function HeroBanner() {
         </div>
         <div className={styles.photoWrap}>
           <div className={styles.photoBlob} aria-hidden="true" />
-          <img src={heroPhoto} alt="Prestataire PrestaLink souriant, pret a intervenir" className={styles.photo} />
+          <img src={heroPhoto} alt={t('hero.photoAlt')} className={styles.photo} />
         </div>
       </div>
     </section>

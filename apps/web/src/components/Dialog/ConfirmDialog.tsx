@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Button, type ButtonVariant } from '../Button/Button.js';
+import { useTranslation } from '../../i18n/useTranslation.js';
 import styles from './ConfirmDialog.module.css';
 
 export interface ConfirmDialogProps {
@@ -20,13 +21,14 @@ export function ConfirmDialog({
   open,
   title,
   message,
-  confirmLabel = 'Confirmer',
-  cancelLabel = 'Annuler',
+  confirmLabel,
+  cancelLabel,
   confirmVariant = 'danger',
   pending,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation();
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -50,10 +52,10 @@ export function ConfirmDialog({
         <span className={styles.message}>{message}</span>
         <div className={styles.actions}>
           <Button variant="secondary" onClick={onCancel}>
-            {cancelLabel}
+            {cancelLabel ?? t('confirmDialog.cancel')}
           </Button>
           <Button ref={confirmButtonRef} variant={confirmVariant} onClick={onConfirm} loading={pending}>
-            {confirmLabel}
+            {confirmLabel ?? t('confirmDialog.confirm')}
           </Button>
         </div>
       </div>

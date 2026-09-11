@@ -3,6 +3,7 @@ import { Chip } from '../Chip/Chip.js';
 import { PublicationTypeBadge, PublicationStatusBadge } from '../Badge/Badge.js';
 import { FavoriteButton } from '../FavoriteButton/FavoriteButton.js';
 import { formatCurrency, formatRelativeDate } from '../../utils/format.js';
+import { useTranslation } from '../../i18n/useTranslation.js';
 import styles from './PublicationCard.module.css';
 
 export interface PublicationCardProps {
@@ -44,14 +45,15 @@ export function PublicationCard({
   onToggleFavorite,
   onClick,
 }: PublicationCardProps) {
-  const amountLabel = type === 'OFFER' ? formatCurrency(amount, currency) : `Budget : ${formatCurrency(amount, currency)}`;
+  const { t } = useTranslation();
+  const amountLabel = type === 'OFFER' ? formatCurrency(amount, currency) : `${t('common.budgetPrefix')} : ${formatCurrency(amount, currency)}`;
 
   return (
     <article className={styles.card} onClick={onClick} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined}>
       <div className={[styles.media, type === 'REQUEST' && styles.mediaRequest].filter(Boolean).join(' ')}>
         <PublicationTypeBadge type={type} />
         {onToggleFavorite && (
-          <FavoriteButton active={Boolean(favorite)} pending={favoritePending} onToggle={onToggleFavorite} label={`Favori : ${title}`} />
+          <FavoriteButton active={Boolean(favorite)} pending={favoritePending} onToggle={onToggleFavorite} label={t('common.favoriteLabel', { title })} />
         )}
       </div>
       <div className={styles.body}>

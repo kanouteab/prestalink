@@ -10,6 +10,7 @@ import {
 import { formatRelativeDate } from '../../utils/format';
 import { notificationIcon } from './notificationDisplay';
 import { BellIcon } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import styles from './NotificationBell.module.css';
 
 export function NotificationBell() {
@@ -19,6 +20,7 @@ export function NotificationBell() {
   const { data: unread } = useUnreadNotificationCount();
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!open) return;
@@ -37,7 +39,7 @@ export function NotificationBell() {
 
   return (
     <div className={styles.wrap} ref={wrapRef}>
-      <button className={styles.button} onClick={() => setOpen((value) => !value)} aria-label="Notifications" aria-expanded={open}>
+      <button className={styles.button} onClick={() => setOpen((value) => !value)} aria-label={t('notifications.ariaLabel')} aria-expanded={open}>
         <BellIcon size={18} />
         {Boolean(unread?.count) && <span className={styles.dot}>{unread!.count > 9 ? '9+' : unread!.count}</span>}
       </button>
@@ -45,12 +47,12 @@ export function NotificationBell() {
       {open && (
         <div className={styles.panel} role="menu">
           <div className={styles.panelHead}>
-            <h3>Notifications</h3>
-            {Boolean(unread?.count) && <button onClick={() => markAllRead.mutate()}>Tout marquer comme lu</button>}
+            <h3>{t('notifications.title')}</h3>
+            {Boolean(unread?.count) && <button onClick={() => markAllRead.mutate()}>{t('notifications.markAllRead')}</button>}
           </div>
 
           {!recent || recent.length === 0 ? (
-            <div className={styles.item}>Aucune notification pour le moment.</div>
+            <div className={styles.item}>{t('notifications.empty')}</div>
           ) : (
             recent.map((notification) => (
               <button
@@ -70,7 +72,7 @@ export function NotificationBell() {
 
           <div className={styles.panelFoot}>
             <Link to="/app/notifications" onClick={() => setOpen(false)}>
-              Voir toutes les notifications
+              {t('notifications.seeAll')}
             </Link>
           </div>
         </div>

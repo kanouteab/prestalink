@@ -1,19 +1,21 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LinkButton, Logo } from '../components';
+import { LanguageSwitcher, LinkButton, Logo } from '../components';
 import { useIsAuthenticated } from '../store/authStore';
+import { useTranslation } from '../i18n/useTranslation';
 import styles from './PublicLayout.module.css';
-
-const NAV_ITEMS = [
-  { to: '/', label: 'Accueil', end: true },
-  { to: '/explorer', label: 'Explorer' },
-  { to: '/demandes', label: 'Demandes disponibles' },
-  { to: '/offres', label: 'Offres disponibles' },
-  { to: '/contact', label: 'Contact' },
-  { to: '/a-propos', label: 'A propos' },
-];
 
 export function PublicLayout() {
   const isAuthenticated = useIsAuthenticated();
+  const { t } = useTranslation();
+
+  const navItems = [
+    { to: '/', label: t('nav.home'), end: true },
+    { to: '/explorer', label: t('nav.explore') },
+    { to: '/demandes', label: t('nav.requests') },
+    { to: '/offres', label: t('nav.offers') },
+    { to: '/contact', label: t('nav.contact') },
+    { to: '/a-propos', label: t('nav.about') },
+  ];
 
   return (
     <div className={styles.shell}>
@@ -22,24 +24,25 @@ export function PublicLayout() {
           <Logo />
         </NavLink>
         <nav className={styles.nav} aria-label="Navigation principale">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => (isActive ? styles.active : undefined)}>
               {item.label}
             </NavLink>
           ))}
         </nav>
         <div className={styles.actions}>
+          <LanguageSwitcher />
           {isAuthenticated ? (
             <LinkButton to="/app" variant="primary" size="sm">
-              Mon espace
+              {t('nav.myAccount')}
             </LinkButton>
           ) : (
             <>
               <LinkButton to="/connexion" variant="ghost" size="sm">
-                Connexion
+                {t('nav.login')}
               </LinkButton>
               <LinkButton to="/inscription" variant="primary" size="sm">
-                Inscription
+                {t('nav.register')}
               </LinkButton>
             </>
           )}
@@ -48,7 +51,7 @@ export function PublicLayout() {
       <main className={styles.main}>
         <Outlet />
       </main>
-      <footer className={styles.footer}>PrestaLink — marketplace de services locale</footer>
+      <footer className={styles.footer}>{t('footer.tagline')}</footer>
     </div>
   );
 }

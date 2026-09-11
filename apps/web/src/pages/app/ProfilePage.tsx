@@ -7,6 +7,7 @@ import { useUpdateProfile, useUploadProfilePhoto } from '../../hooks/useProfile'
 import { apiClient } from '../../services/apiClient';
 import { Badge, Button, Input, useToast } from '../../components';
 import { initials } from '../../utils/format';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 import styles from './ProfilePage.module.css';
 
@@ -15,6 +16,7 @@ export function ProfilePage() {
   const updateProfile = useUpdateProfile();
   const uploadPhoto = useUploadProfilePhoto();
   const { showToast } = useToast();
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -48,8 +50,8 @@ export function ProfilePage() {
     updateProfile.mutate(
       { ...user, ...values },
       {
-        onSuccess: () => showToast('Profil mis a jour', 'success'),
-        onError: () => showToast('Impossible de mettre a jour le profil', 'error'),
+        onSuccess: () => showToast(t('profile.successToast'), 'success'),
+        onError: () => showToast(t('profile.errorToast'), 'error'),
       },
     );
   });
@@ -58,16 +60,16 @@ export function ProfilePage() {
     const file = event.target.files?.[0];
     if (!file) return;
     uploadPhoto.mutate(file, {
-      onSuccess: () => showToast('Photo mise a jour', 'success'),
-      onError: () => showToast("Impossible d'envoyer la photo", 'error'),
+      onSuccess: () => showToast(t('profile.photoSuccessToast'), 'success'),
+      onError: () => showToast(t('profile.photoErrorToast'), 'error'),
     });
   };
 
   return (
     <div className={shared.narrow} style={{ padding: 0 }}>
       <header className={shared.pageHeader}>
-        <h1>Mon profil</h1>
-        <p>Vos informations visibles par les autres utilisateurs de PrestaLink.</p>
+        <h1>{t('profile.title')}</h1>
+        <p>{t('profile.subtitle')}</p>
       </header>
 
       <form className={styles.card} onSubmit={onSubmit} noValidate>
@@ -77,11 +79,11 @@ export function ProfilePage() {
           </div>
           <div>
             <Button type="button" variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} loading={uploadPhoto.isPending}>
-              Changer la photo
+              {t('profile.changePhoto')}
             </Button>
             <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={onPhotoSelected} />
             <div className={styles.badges}>
-              {user.verifiedProfile && <Badge tone="success">Profil verifie</Badge>}
+              {user.verifiedProfile && <Badge tone="success">{t('profile.verifiedBadge')}</Badge>}
               {user.trustBadge && <Badge tone="brand">{user.trustBadge}</Badge>}
             </div>
           </div>
@@ -93,33 +95,33 @@ export function ProfilePage() {
             className={[styles.roleOption, role === 'CLIENT' && styles.selected].filter(Boolean).join(' ')}
             onClick={() => setValue('role', 'CLIENT')}
           >
-            🙋 Client
+            🙋 {t('profile.client')}
           </button>
           <button
             type="button"
             className={[styles.roleOption, role === 'PRESTATAIRE' && styles.selected].filter(Boolean).join(' ')}
             onClick={() => setValue('role', 'PRESTATAIRE')}
           >
-            🛠️ Prestataire
+            🛠️ {t('profile.provider')}
           </button>
         </div>
 
-        <Input label="Nom complet" errorText={errors.fullName?.message} {...register('fullName')} />
-        <Input label="E-mail" value={user.email} disabled helpText="L'adresse e-mail ne peut pas etre modifiee ici." />
-        <Input label="Telephone" errorText={errors.phone?.message} {...register('phone')} />
+        <Input label={t('profile.fullName')} errorText={errors.fullName?.message} {...register('fullName')} />
+        <Input label={t('profile.email')} value={user.email} disabled helpText={t('profile.emailHelp')} />
+        <Input label={t('profile.phone')} errorText={errors.phone?.message} {...register('phone')} />
 
         <div className={styles.row}>
-          <Input label="Pays" errorText={errors.country?.message} {...register('country')} />
-          <Input label="Ville" errorText={errors.city?.message} {...register('city')} />
+          <Input label={t('profile.country')} errorText={errors.country?.message} {...register('country')} />
+          <Input label={t('profile.city')} errorText={errors.city?.message} {...register('city')} />
         </div>
         <div className={styles.row}>
-          <Input label="Adresse" errorText={errors.streetAddress?.message} {...register('streetAddress')} />
-          <Input label="Code postal" errorText={errors.postalCode?.message} {...register('postalCode')} />
+          <Input label={t('profile.address')} errorText={errors.streetAddress?.message} {...register('streetAddress')} />
+          <Input label={t('profile.postalCode')} errorText={errors.postalCode?.message} {...register('postalCode')} />
         </div>
 
         <div className={styles.actions}>
           <Button type="submit" variant="primary" loading={updateProfile.isPending}>
-            Enregistrer
+            {t('profile.save')}
           </Button>
         </div>
       </form>

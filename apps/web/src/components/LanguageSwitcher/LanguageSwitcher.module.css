@@ -1,0 +1,31 @@
+.switcher {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  background: var(--color-surface2);
+  border-radius: var(--radius-pill);
+  flex: none;
+}
+
+.option {
+  border: none;
+  background: transparent;
+  color: var(--color-ink500);
+  font-family: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.option:hover:not(.active) {
+  color: var(--color-ink900);
+}
+
+.active {
+  background: var(--color-brand);
+  color: #fff;
+}

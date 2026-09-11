@@ -3,10 +3,12 @@ import { useRequestsList } from '../../hooks/useRequests';
 import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { RequestCardItem } from '../../features/publications/PublicationCardItem';
 import { Input } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 
 export function RequestsPage() {
   const { data, isLoading } = useRequestsList();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const filtered = useMemo(() => {
@@ -19,12 +21,12 @@ export function RequestsPage() {
   return (
     <div className={shared.page}>
       <header className={shared.pageHeader}>
-        <h1>Demandes disponibles</h1>
-        <p>Besoins publies par des clients a la recherche d'un prestataire.</p>
+        <h1>{t('requestsPage.title')}</h1>
+        <p>{t('requestsPage.subtitle')}</p>
       </header>
 
       <div className={shared.toolbar}>
-        <Input label="Rechercher une demande" placeholder="Ex : plomberie, menage..." value={search} onChange={(event) => setSearch(event.target.value)} />
+        <Input label={t('requestsPage.searchLabel')} placeholder={t('requestsPage.searchPlaceholder')} value={search} onChange={(event) => setSearch(event.target.value)} />
       </div>
 
       <PublicationGrid
@@ -32,8 +34,8 @@ export function RequestsPage() {
         isLoading={isLoading}
         keyExtractor={(request) => request.id}
         renderItem={(request) => <RequestCardItem request={request} />}
-        emptyTitle="Aucune demande disponible"
-        emptyMessage="Revenez bientot, de nouvelles demandes sont publiees regulierement."
+        emptyTitle={t('requestsPage.emptyTitle')}
+        emptyMessage={t('requestsPage.emptyMessage')}
       />
     </div>
   );

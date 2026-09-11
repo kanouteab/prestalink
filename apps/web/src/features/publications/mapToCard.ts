@@ -1,6 +1,11 @@
 import type { OfferResponse, RequestResponse } from '@prestalink/shared-types';
 import type { PublicationCardProps } from '../../components';
 import { initials } from '../../utils/format';
+import { getLocale } from '../../i18n/localeStore';
+import { fr } from '../../i18n/translations/fr';
+import { en } from '../../i18n/translations/en';
+
+const OTHER_LABEL = () => (getLocale() === 'en' ? en.common.other : fr.common.other);
 
 type FavoriteState = { favorite: boolean; pending: boolean; onToggle: () => void };
 
@@ -8,7 +13,7 @@ export function mapOfferToCard(offer: OfferResponse, favoriteState?: FavoriteSta
   return {
     type: 'OFFER',
     title: offer.title,
-    categoryName: offer.category?.name ?? 'Autre',
+    categoryName: offer.category?.name ?? OTHER_LABEL(),
     locationLabel: offer.locationLabel || offer.location,
     createdAt: offer.createdAt,
     amount: offer.price,
@@ -25,7 +30,7 @@ export function mapRequestToCard(request: RequestResponse, favoriteState?: Favor
   return {
     type: 'REQUEST',
     title: request.title,
-    categoryName: request.category?.name ?? 'Autre',
+    categoryName: request.category?.name ?? OTHER_LABEL(),
     locationLabel: request.locationLabel || request.location,
     createdAt: request.createdAt,
     amount: request.budget,

@@ -3,10 +3,12 @@ import { useOffersFeed } from '../../hooks/useOffers';
 import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem } from '../../features/publications/PublicationCardItem';
 import { Input } from '../../components';
+import { useTranslation } from '../../i18n/useTranslation';
 import shared from '../shared.module.css';
 
 export function OffersPage() {
   const { data, isLoading } = useOffersFeed();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const filtered = useMemo(() => {
@@ -19,12 +21,12 @@ export function OffersPage() {
   return (
     <div className={shared.page}>
       <header className={shared.pageHeader}>
-        <h1>Offres disponibles</h1>
-        <p>Services proposes par des prestataires actifs sur PrestaLink.</p>
+        <h1>{t('offersPage.title')}</h1>
+        <p>{t('offersPage.subtitle')}</p>
       </header>
 
       <div className={shared.toolbar}>
-        <Input label="Rechercher une offre" placeholder="Ex : reparation, cours..." value={search} onChange={(event) => setSearch(event.target.value)} />
+        <Input label={t('offersPage.searchLabel')} placeholder={t('offersPage.searchPlaceholder')} value={search} onChange={(event) => setSearch(event.target.value)} />
       </div>
 
       <PublicationGrid
@@ -32,8 +34,8 @@ export function OffersPage() {
         isLoading={isLoading}
         keyExtractor={(offer) => offer.id}
         renderItem={(offer) => <OfferCardItem offer={offer} />}
-        emptyTitle="Aucune offre disponible"
-        emptyMessage="Revenez bientot, de nouvelles offres sont publiees regulierement."
+        emptyTitle={t('offersPage.emptyTitle')}
+        emptyMessage={t('offersPage.emptyMessage')}
       />
     </div>
   );
