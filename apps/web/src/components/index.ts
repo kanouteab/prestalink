@@ -42,3 +42,16 @@ export type { StarRatingProps } from './StarRating/StarRating.js';
 
 export { Logo } from './Logo/Logo.js';
 export type { LogoProps } from './Logo/Logo.js';
+
+export {
+  HomeIcon,
+  SearchIcon,
+  PlusCircleIcon,
+  FileTextIcon,
+  ReceiptIcon,
+  MessageCircleIcon,
+  HeartIcon,
+  BellIcon,
+  PlayIcon,
+} from './Icon/Icon.js';
+export type { IconProps } from './Icon/Icon.js';

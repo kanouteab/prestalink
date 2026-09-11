@@ -9,6 +9,7 @@ import {
 } from '../../hooks/useNotifications';
 import { formatRelativeDate } from '../../utils/format';
 import { notificationIcon } from './notificationDisplay';
+import { BellIcon } from '../../components';
 import styles from './NotificationBell.module.css';
 
 export function NotificationBell() {
@@ -37,7 +38,7 @@ export function NotificationBell() {
   return (
     <div className={styles.wrap} ref={wrapRef}>
       <button className={styles.button} onClick={() => setOpen((value) => !value)} aria-label="Notifications" aria-expanded={open}>
-        🔔
+        <BellIcon size={18} />
         {Boolean(unread?.count) && <span className={styles.dot}>{unread!.count > 9 ? '9+' : unread!.count}</span>}
       </button>
 

@@ -24,9 +24,21 @@ export function HeroBanner() {
     <section className={styles.hero}>
       <div className={styles.grid}>
         <div>
-          <span className={styles.kicker}>🤝 Marketplace de services locale</span>
+          <span className={styles.kicker}>Marketplace de services locale</span>
           <h1 className={styles.title}>{banner.title}</h1>
           <p className={styles.subtitle}>{banner.subtitle}</p>
+          {features.length > 0 && (
+            <div className={styles.features}>
+              {features.map((feature, index) => (
+                <span key={feature} className={styles.feature}>
+                  <span className={styles.featureIcon} aria-hidden="true">
+                    {index + 1}
+                  </span>
+                  {feature}
+                </span>
+              ))}
+            </div>
+          )}
           <div className={styles.actions}>
             <LinkButton to={primaryTo} variant="primary">
               {banner.primaryButtonText}
@@ -35,18 +47,6 @@ export function HeroBanner() {
               {banner.secondaryButtonText}
             </LinkButton>
           </div>
-          {features.length > 0 && (
-            <div className={styles.features}>
-              {features.map((feature) => (
-                <span key={feature} className={styles.feature}>
-                  <span className={styles.featureIcon} aria-hidden="true">
-                    ✓
-                  </span>
-                  {feature}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
         <div className={styles.photoWrap}>
           <div className={styles.photoBlob} aria-hidden="true" />

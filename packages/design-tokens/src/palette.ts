@@ -1,17 +1,20 @@
 /**
- * Palette PrestaLink. `brand`/`brandEmphasis`/`brandSecondary` reprennent
- * exactement primaryColor/secondaryColor de branding_settings (table admin,
- * deja configurable via /api/admin/branding) plutot qu'une couleur inventee,
- * pour que le produit et le logo existant restent visuellement coherents.
+ * Piste "conseil technologique" (marine + or), calquee sur la direction
+ * artistique validee par l'utilisateur (cf. cyberneticconsulting.ca) : marine
+ * profond pour l'autorite/la confiance, or chaud pour les temps forts (badges
+ * numerotes, mise en avant dans les titres, CTA secondaires). Remplace
+ * deliberement la piste precedente adossee a branding_settings — a resynchroniser
+ * avec l'admin si cette direction est confirmee au-dela de l'essai.
  * Offre (sarcelle) et Demande (violet) restent deliberement eloignees des
  * couleurs semantiques (succes/erreur/avertissement) : ce sont deux natures
  * de publication, pas deux statuts.
  */
 export const lightPalette = {
-  brand: '#0D6EFD',
-  brandEmphasis: '#0B5ED7',
-  brandTint: '#E8F1FF',
-  brandSecondary: '#6610F2',
+  brand: '#0B1E45',
+  brandEmphasis: '#16305F',
+  brandTint: '#E7EBF3',
+  brandSecondary: '#F2B705',
+  brandSecondaryTint: '#FCF1D2',
 
   offre: '#0F9D8B',
   offreTint: '#E4F7F3',
@@ -28,24 +31,32 @@ export const lightPalette = {
   danger: '#DC2626',
   dangerTint: '#FDEAEA',
 
+  // Accent chaud reserve aux temps forts (bannieres, favoris actifs) : ne
+  // remplace pas `brand`, qui reste lie au logo et a branding_settings.
+  accentWarm: '#E2633D',
+  accentWarmTint: '#FCE9E1',
+
   ink900: '#12142A',
   ink700: '#2C2F49',
   ink500: '#5A5F80',
   ink300: '#9297B5',
 
-  surface0: '#F5F6FC',
+  // Bandes claires ivoire/creme entre le blanc pur, comme les sections
+  // alternees du site de reference plutot qu'un simple gris.
+  surface0: '#FCF8ED',
   surface1: '#FFFFFF',
-  surface2: '#EEF1FB',
+  surface2: '#F6F1E1',
 
-  border: '#E1E4F2',
-  borderStrong: '#C7CCE6',
+  border: '#EAE3CE',
+  borderStrong: '#DBCFA6',
 } as const;
 
 export const darkPalette = {
-  brand: '#6EA8FE',
-  brandEmphasis: '#9EC5FE',
-  brandTint: '#122B52',
-  brandSecondary: '#9B6BF3',
+  brand: '#7C97C9',
+  brandEmphasis: '#9BB0D8',
+  brandTint: '#1B2C4D',
+  brandSecondary: '#F5C93B',
+  brandSecondaryTint: '#3A2E0C',
 
   offre: '#3FD9C4',
   offreTint: '#0E2A28',
@@ -61,6 +72,9 @@ export const darkPalette = {
 
   danger: '#FF8080',
   dangerTint: '#3A1717',
+
+  accentWarm: '#F0906E',
+  accentWarmTint: '#3A241C',
 
   ink900: '#F1F2FA',
   ink700: '#D3D6EC',

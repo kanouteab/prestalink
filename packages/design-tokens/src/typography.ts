@@ -1,14 +1,14 @@
 /**
- * Trois familles : Fraunces (titres, caractere), Public Sans (interface et
- * texte courant), IBM Plex Mono (prix, identifiants, donnees chiffrees).
+ * Trois familles : Sora (titres, caractere), Work Sans (interface et texte
+ * courant), IBM Plex Mono (prix, identifiants, donnees chiffrees).
  *
  * Sur React Native, `fontFamilies` sert de reference logique : chaque plateforme
  * charge les fichiers de police (expo-font) et mappe vers le nom de fonte reel
- * (ex. "Fraunces_600SemiBold") ; sur Web, ces piles CSS sont utilisees telles quelles.
+ * (ex. "Sora_700Bold") ; sur Web, ces piles CSS sont utilisees telles quelles.
  */
 export const fontFamilies = {
-  display: '"Fraunces", "Iowan Old Style", Georgia, serif',
-  body: '"Public Sans", "Segoe UI", system-ui, sans-serif',
+  display: '"Sora", "Segoe UI", system-ui, sans-serif',
+  body: '"Work Sans", "Segoe UI", system-ui, sans-serif',
   mono: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
 } as const;
 

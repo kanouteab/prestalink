@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Button, Logo } from '../components';
+import { Button, Logo, HomeIcon, SearchIcon, PlusCircleIcon, FileTextIcon, ReceiptIcon, MessageCircleIcon, HeartIcon } from '../components';
 import { useAuthStore } from '../store/authStore';
 import { useLogout } from '../hooks/useAuth';
 import { useRealtimeConnection } from '../hooks/useRealtimeConnection';
@@ -8,13 +8,13 @@ import { NotificationBell } from '../features/notifications/NotificationBell';
 import styles from './AppLayout.module.css';
 
 const NAV_ITEMS = [
-  { to: '/app', label: 'Accueil', end: true, icon: '🏠' },
-  { to: '/app/explorer', label: 'Explorer', icon: '🔍' },
-  { to: '/app/publier', label: 'Publier', icon: '➕' },
-  { to: '/app/publications', label: 'Mes publications', icon: '📄' },
-  { to: '/app/missions', label: 'Missions', icon: '🧾' },
-  { to: '/app/messages', label: 'Messages', icon: '💬' },
-  { to: '/app/favoris', label: 'Favoris', icon: '♥' },
+  { to: '/app', label: 'Accueil', end: true, Icon: HomeIcon },
+  { to: '/app/explorer', label: 'Explorer', Icon: SearchIcon },
+  { to: '/app/publier', label: 'Publier', Icon: PlusCircleIcon },
+  { to: '/app/publications', label: 'Mes publications', Icon: FileTextIcon },
+  { to: '/app/missions', label: 'Missions', Icon: ReceiptIcon },
+  { to: '/app/messages', label: 'Messages', Icon: MessageCircleIcon },
+  { to: '/app/favoris', label: 'Favoris', Icon: HeartIcon },
 ];
 
 export function AppLayout() {
@@ -30,9 +30,9 @@ export function AppLayout() {
           <Logo />
         </NavLink>
         <nav className={styles.sidebarNav} aria-label="Navigation de l'espace connecte">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map(({ Icon, ...item }) => (
             <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => (isActive ? styles.active : undefined)}>
-              <span aria-hidden="true">{item.icon}</span>
+              <Icon size={18} />
               {item.label}
             </NavLink>
           ))}

@@ -78,7 +78,7 @@
 .composer textarea {
   flex: 1;
   resize: none;
-  font: 14px 'Public Sans', sans-serif;
+  font: 14px 'Work Sans', sans-serif;
   padding: 9px 12px;
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--color-border-strong);

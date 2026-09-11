@@ -3,11 +3,12 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  font-family: 'Public Sans', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
   font-weight: 700;
   font-size: 13.5px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.08s ease, background-color 0.12s ease, border-color 0.12s ease;
   white-space: nowrap;
@@ -54,6 +55,7 @@
 .outline {
   background: transparent;
   color: var(--color-brand);
+  border-width: 2px;
   border-color: var(--color-brand);
 }
 .outline:hover:not(:disabled) {

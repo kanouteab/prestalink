@@ -6,6 +6,7 @@ import { useMyRequests } from '../../hooks/useRequests';
 import { useFavorites } from '../../hooks/useFavorites';
 import { PublicationGrid } from '../../features/publications/PublicationGrid';
 import { OfferCardItem, RequestCardItem } from '../../features/publications/PublicationCardItem';
+import { AdBanner } from '../../features/ads/AdBanner';
 import { LinkButton } from '../../components';
 import shared from '../shared.module.css';
 
@@ -26,6 +27,8 @@ export function AppHomePage() {
           {myOffers?.length ?? 0} offre(s) publiee(s), {myRequests?.length ?? 0} demande(s) publiee(s), {favorites?.length ?? 0} favori(s).
         </p>
       </header>
+
+      <AdBanner />
 
       <div className={shared.toolbar}>
         <LinkButton to="/app/publier" variant="primary" size="sm">
