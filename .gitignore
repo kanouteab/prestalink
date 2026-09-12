@@ -44,3 +44,4 @@ packages/*/dist/
 .turbo/
 npm-debug.log*
 
+.vercel
