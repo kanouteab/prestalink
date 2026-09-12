@@ -7,10 +7,10 @@ databases:
 services:
   - type: web
     name: prestalink-api
-    env: java
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     plan: free
-    buildCommand: chmod +x mvnw && ./mvnw clean package -DskipTests
-    startCommand: java -jar target/*.jar
     envVars:
       - key: DB_HOST
         fromDatabase:
