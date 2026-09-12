@@ -1,6 +1,40 @@
+databases:
+  - name: prestalink-db
+    databaseName: prestalink_db
+    user: prestalink
+    plan: free
+
 services:
   - type: web
     name: prestalink-api
     env: java
+    plan: free
     buildCommand: chmod +x mvnw && ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: prestalink-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: prestalink-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: prestalink-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: prestalink-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: prestalink-db
+          property: password
+      - key: JPA_DDL_AUTO
+        value: update
+      - key: CORS_ALLOWED_ORIGIN_PATTERNS
+        value: https://prestalink-api.vercel.app,https://*.vercel.app
+      - key: APP_PUBLIC_BASE_URL
+        sync: false
